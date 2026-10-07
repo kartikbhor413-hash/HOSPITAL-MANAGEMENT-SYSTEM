@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Consultation Desk - SHMS</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="app-wrapper">
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="/static/images/hospital_icon.png" alt="Hospital Center Logo" style="height: 38px; width: 38px; object-fit: contain; background: white; padding: 4px; border-radius: var(--radius-sm);">
+      <div>
+        <div class="sidebar-title">HOSPITAL CENTER</div>
+        <div class="sidebar-subtitle">Physician Desk</div>
+      </div>
+    </div>
+
+    <ul class="sidebar-menu">
+      <div class="menu-section-label">Clinical Workstation</div>
+      <li class="menu-item active"><a href="/dashboard/doctor"><span class="menu-icon">📋</span> Today's OPD Queue</a></li>
+      <li class="menu-item"><a href="#consultationsHistory"><span class="menu-icon">📁</span> Medical History</a></li>
+
+      <div class="menu-section-label">Other Portals</div>
+      <li class="menu-item"><a href="/dashboard/admin"><span class="menu-icon">👑</span> Admin Overview</a></li>
+      <li class="menu-item"><a href="/dashboard/laboratory"><span class="menu-icon">🧪</span> Diagnostic Lab</a></li>
+      <li class="menu-item"><a href="/dashboard/pharmacy"><span class="menu-icon">💊</span> Pharmacy Inventory</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-mini-card">
+        <div class="user-avatar" style="background: linear-gradient(135deg, #10b981, #06b6d4);">DOC</div>
+        <div class="user-info">
+          <div class="user-name">{{ current_user.name if current_user else 'Dr. Sarah Smith' }}</div>
+          <span class="user-role-badge">Physician / Doctor</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT -->
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title">OPD Patient Consultation Desk</h1>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-secondary btn-sm" onclick="handleLogout()">Sign Out</button>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <!-- QUICK STATS -->
+      <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Assigned Clinic</span>
+            <span class="stat-value" style="font-size: 22px;">OPD-102</span>
+            <span class="stat-meta">Cardiology Department</span>
+          </div>
+          <div class="stat-icon icon-blue">🏥</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">OPD Queue</span>
+            <span class="stat-value" id="doctor-queue-count">--</span>
+            <span class="stat-meta">Patients booked today</span>
+          </div>
+          <div class="stat-icon icon-cyan">📅</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Standard Fee</span>
+            <span class="stat-value" style="font-size: 22px;">$120.00</span>
+            <span class="stat-meta">Auto-billed upon discharge</span>
+          </div>
+          <div class="stat-icon icon-green">💵</div>
+        </div>
+      </div>
+
+      <!-- TODAY'S APPOINTMENT QUEUE -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🩺 Today's OPD Patient Queue &amp; Consultations</div>
+          <button class="btn btn-secondary btn-sm" onclick="loadDoctorAppointments()">🔄 Refresh Queue</button>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Appointment ID</th>
+                <th>Patient Name &amp; ID</th>
+                <th>Time Slot</th>
+                <th>Reason for Visit</th>
+                <th>Status</th>
+                <th>Clinical Actions</th>
+              </tr>
+            </thead>
+            <tbody id="doctorAptsTableBody">
+              <tr><td colspan="7" class="text-center text-muted">Loading today's consultations...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PREVIOUS MEDICAL RECORDS & CONSULTATIONS -->
+      <div class="card" id="consultationsHistory">
+        <div class="card-header">
+          <div class="card-title">📁 Recent Clinical Consultations Completed</div>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Record ID</th>
+                <th>Patient ID</th>
+                <th>Date &amp; Time</th>
+                <th>Clinical Diagnosis</th>
+                <th>Prescription</th>
+                <th>Doctor Notes</th>
+              </tr>
+            </thead>
+            <tbody id="doctorRecentRecordsBody">
+              <tr><td colspan="6" class="text-center text-muted">Loading records...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     MODAL: DOCTOR CONSULTATION & PRESCRIPTION WRITER
+     ========================================================================= -->
+<div id="consultationModal" class="modal-backdrop">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-header">
+      <h3 class="modal-title">Clinical Patient Consultation &amp; E-Prescription</h3>
+      <button class="modal-close" onclick="closeModal('consultationModal')">&times;</button>
+    </div>
+    <form id="consultationForm">
+      <div class="modal-body">
+        <input type="hidden" id="c_apt_id">
+        <input type="hidden" id="c_patient_id">
+
+        <div style="background:#eff6ff; padding:12px; border-radius:var(--radius-sm); margin-bottom:16px;">
+          <strong>Examing Patient:</strong> <span id="c_patient_name" style="font-weight:700; color:var(--primary);"></span>
+        </div>
+
+        <!-- VITALS -->
+        <h4 style="font-size:14px; font-weight:700; margin-bottom:10px;">1. Vital Signs</h4>
+        <div class="form-row" style="grid-template-columns: repeat(4, 1fr); margin-bottom:16px;">
+          <div class="form-group">
+            <label class="form-label" style="font-size:12px;">BP (mmHg)</label>
+            <input type="text" id="c_bp" class="form-control" placeholder="120/80">
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="font-size:12px;">Heart Rate (bpm)</label>
+            <input type="number" id="c_hr" class="form-control" placeholder="72">
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="font-size:12px;">Temp (°F)</label>
+            <input type="number" id="c_temp" class="form-control" placeholder="98.6" step="0.1">
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="font-size:12px;">SpO2 (%)</label>
+            <input type="number" id="c_spo2" class="form-control" placeholder="99">
+          </div>
+        </div>
+
+        <!-- DIAGNOSIS -->
+        <h4 style="font-size:14px; font-weight:700; margin-bottom:10px;">2. Symptoms &amp; Clinical Diagnosis</h4>
+        <div class="form-group">
+          <label class="form-label">Presenting Symptoms *</label>
+          <input type="text" id="c_symptoms" class="form-control" required placeholder="e.g. Mild palpitations on exertion, fatigue">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Diagnosis / Assessment *</label>
+          <input type="text" id="c_diagnosis" class="form-control" required placeholder="e.g. Benign Sinus Arrhythmia with stress factor">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Doctor's Clinical Notes &amp; Lifestyle Advice</label>
+          <textarea id="c_notes" class="form-control" rows="2" placeholder="Dietary restrictions, rest, hydration, warning signs..."></textarea>
+        </div>
+
+        <!-- E-PRESCRIPTION COMPOSER -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; margin-bottom:10px;">
+          <h4 style="font-size:14px; font-weight:700;">3. Electronic Prescription Composer</h4>
+          <button type="button" id="addMedRowBtn" class="btn btn-secondary btn-sm">+ Add Medicine</button>
+        </div>
+
+        <div id="prescribedMedsContainer" style="margin-bottom:12px;">
+          <!-- Dynamically inserted medicine rows -->
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:16px; font-size:14px; font-weight:700; margin-bottom:16px;">
+          <span>Pharmacy Charge:</span>
+          <span id="prescriptionGrandTotal" style="color:var(--primary);">$0.00</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('consultationModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">✓ Complete Consultation &amp; Issue Rx</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="/static/js/auth.js"></script>
+<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/patients.js"></script>
+<script src="/static/js/medical.js"></script>
+
+<script>
+  async function loadDoctorAppointments() {
+    const tbody = document.getElementById("doctorAptsTableBody");
+    if (!tbody) return;
+
+    try {
+      const res = await fetch("/api/appointments");
+      const json = await res.json();
+      if (!json.success || !json.data) return;
+
+      document.getElementById("doctor-queue-count").textContent = json.data.length;
+
+      if (json.data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted" style="padding:24px;">No appointments in queue today.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = json.data.map(a => `
+        <tr>
+          <td><span class="badge" style="background:var(--primary); color:white; font-weight:700;">#${a.token_number}</span></td>
+          <td><strong>${escapeHtml(a.appointment_id)}</strong></td>
+          <td>
+            <div style="font-weight: 600;">${escapeHtml(a.patient_name)}</div>
+            <div style="font-size: 11px; color: var(--text-muted);">ID: ${a.patient_id}</div>
+          </td>
+          <td>${a.time_slot}</td>
+          <td>${escapeHtml(a.purpose || 'OPD Checkup')}</td>
+          <td>
+            <span class="badge ${a.status === 'Completed' ? 'badge-completed' : a.status === 'Cancelled' ? 'badge-cancelled' : 'badge-scheduled'}">
+              ${a.status}
+            </span>
+          </td>
+          <td>
+            ${a.status === 'Scheduled' ? `
+              <button class="btn btn-sm btn-primary" onclick="openConsultationModal('${a.appointment_id}', '${a.patient_id}', '${escapeHtml(a.patient_name)}')">Examine Patient &rarr;</button>
+            ` : `
+              <span class="badge badge-completed">Examined</span>
+            `}
+          </td>
+        </tr>
+      `).join("");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function loadDoctorRecords() {
+    const tbody = document.getElementById("doctorRecentRecordsBody");
+    if (!tbody) return;
+
+    try {
+      const res = await fetch("/api/medical-records");
+      const json = await res.json();
+      if (!json.success || !json.data) return;
+
+      tbody.innerHTML = json.data.map(m => `
+        <tr>
+          <td><strong>${m.record_id}</strong></td>
+          <td>${m.patient_id}</td>
+          <td>${m.date}</td>
+          <td><strong>${escapeHtml(m.diagnosis)}</strong></td>
+          <td>${m.prescription_id ? `<span class="badge badge-scheduled">${m.prescription_id}</span>` : 'None'}</td>
+          <td style="font-size:12px; color:var(--text-muted);">${escapeHtml(m.doctor_notes || '--')}</td>
+        </tr>
+      `).join("");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadDoctorAppointments();
+    loadDoctorRecords();
+  });
+</script>
+
+</body>
+</html>

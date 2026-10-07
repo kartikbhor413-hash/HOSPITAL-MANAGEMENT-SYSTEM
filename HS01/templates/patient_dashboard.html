@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Portal - SHMS</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="app-wrapper">
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="/static/images/hospital_icon.png" alt="Hospital Center Logo" style="height: 38px; width: 38px; object-fit: contain; background: white; padding: 4px; border-radius: var(--radius-sm);">
+      <div>
+        <div class="sidebar-title">HOSPITAL CENTER</div>
+        <div class="sidebar-subtitle">Patient Hub</div>
+      </div>
+    </div>
+
+    <ul class="sidebar-menu">
+      <div class="menu-section-label">Personal Records</div>
+      <li class="menu-item active"><a href="/dashboard/patient"><span class="menu-icon">🏠</span> My Medical Summary</a></li>
+      <li class="menu-item"><a href="#myAppointments"><span class="menu-icon">📅</span> My Appointments</a></li>
+      <li class="menu-item"><a href="#myPrescriptions"><span class="menu-icon">💊</span> Prescriptions</a></li>
+      <li class="menu-item"><a href="#myLabReports"><span class="menu-icon">🧪</span> Lab Reports</a></li>
+      <li class="menu-item"><a href="#myBills"><span class="menu-icon">💳</span> Hospital Invoices</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-mini-card">
+        <div class="user-avatar" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">PAT</div>
+        <div class="user-info">
+          <div class="user-name">{{ current_user.name if current_user else 'Alice Montgomery' }}</div>
+          <span class="user-role-badge">Patient</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT -->
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title">Personal Patient Health Record (PHR)</h1>
+      </div>
+      <div class="topbar-right">
+        <span class="badge" style="background:#dbeafe; color:#1e40af; font-size:13px; font-weight:700;">Patient ID: PAT001</span>
+        <button class="btn btn-secondary btn-sm" onclick="handleLogout()">Sign Out</button>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <!-- SUMMARY BANNER -->
+      <div class="card" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; border: none; padding: 24px; margin-bottom: 24px;">
+        <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 6px;">Welcome, {{ current_user.name if current_user else 'Alice Montgomery' }}</h2>
+        <p style="font-size: 13.5px; color: #bfdbfe; margin-bottom: 16px;">
+          Blood Group: <strong style="color:white;">A+</strong> • Primary Physician: <strong style="color:white;">Dr. Sarah Smith (Cardiology)</strong> • Care Status: <strong style="color:white;">Outpatient</strong>
+        </p>
+        <div style="display: flex; gap: 12px;">
+          <a href="#myAppointments" class="btn btn-primary" style="background: white; color: var(--primary); font-size: 13px;">View Next Appointment</a>
+          <a href="#myPrescriptions" class="btn btn-secondary" style="background: rgba(255,255,255,0.15); color: white; border: none; font-size: 13px;">Check Current Medications</a>
+        </div>
+      </div>
+
+      <!-- MY APPOINTMENTS -->
+      <div class="card" id="myAppointments">
+        <div class="card-header">
+          <div class="card-title">📅 My Doctor Consultations &amp; OPD Tokens</div>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Appointment Code</th>
+                <th>OPD Token</th>
+                <th>Attending Physician</th>
+                <th>Date &amp; Time</th>
+                <th>Purpose</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="myAppointmentsBody">
+              <tr><td colspan="6" class="text-center text-muted">Loading appointments...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MY PRESCRIPTIONS -->
+      <div class="card" id="myPrescriptions">
+        <div class="card-header">
+          <div class="card-title">💊 Active Prescriptions &amp; Dosage Instructions</div>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Prescription ID</th>
+                <th>Date Prescribed</th>
+                <th>Diagnosis</th>
+                <th>Medication Details &amp; Dosage</th>
+                <th>Pharmacy Status</th>
+              </tr>
+            </thead>
+            <tbody id="myPrescriptionsBody">
+              <tr><td colspan="5" class="text-center text-muted">Loading prescriptions...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MY LAB REPORTS -->
+      <div class="card" id="myLabReports">
+        <div class="card-header">
+          <div class="card-title">🧪 Diagnostic Test Results &amp; Findings</div>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Report Code</th>
+                <th>Test Name</th>
+                <th>Date Ordered</th>
+                <th>Report Status</th>
+                <th>Diagnostic Findings</th>
+              </tr>
+            </thead>
+            <tbody id="myLabReportsBody">
+              <tr><td colspan="5" class="text-center text-muted">Loading laboratory reports...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MY INVOICES -->
+      <div class="card" id="myBills">
+        <div class="card-header">
+          <div class="card-title">💳 My Hospital Invoices &amp; Online Payment</div>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Invoice Code</th>
+                <th>Date</th>
+                <th>Total Charges</th>
+                <th>Amount Paid</th>
+                <th>Payment Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="myBillsBody">
+              <tr><td colspan="6" class="text-center text-muted">Loading bills...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="/static/js/auth.js"></script>
+<script src="/static/js/dashboard.js"></script>
+
+<script>
+  async function loadPatientPortalData() {
+    // 1. Appointments
+    try {
+      const res = await fetch("/api/appointments");
+      const json = await res.json();
+      const tbody = document.getElementById("myAppointmentsBody");
+      if (json.success && tbody) {
+        tbody.innerHTML = json.data.length ? json.data.map(a => `
+          <tr>
+            <td><strong>${a.appointment_id}</strong></td>
+            <td><span class="badge" style="background:var(--primary); color:white; font-weight:700;">#${a.token_number}</span></td>
+            <td><strong>${escapeHtml(a.doctor_name)}</strong> (${escapeHtml(a.department)})</td>
+            <td>${a.appointment_date} at <strong>${a.time_slot}</strong></td>
+            <td>${escapeHtml(a.purpose || 'Follow-up')}</td>
+            <td><span class="badge ${a.status === 'Completed' ? 'badge-completed' : 'badge-scheduled'}">${a.status}</span></td>
+          </tr>
+        `).join("") : '<tr><td colspan="6" class="text-center text-muted">No appointments found.</td></tr>';
+      }
+    } catch(e) { console.error(e); }
+
+    // 2. Prescriptions
+    try {
+      const res = await fetch("/api/prescriptions");
+      const json = await res.json();
+      const tbody = document.getElementById("myPrescriptionsBody");
+      if (json.success && tbody) {
+        tbody.innerHTML = json.data.length ? json.data.map(p => `
+          <tr>
+            <td><strong>${p.prescription_id}</strong></td>
+            <td>${p.date}</td>
+            <td>${escapeHtml(p.diagnosis)}</td>
+            <td>
+              <div style="font-size:12.5px;">
+                ${p.medicines.map(m => `<div><strong>${escapeHtml(m.medicine_name)}</strong> — ${escapeHtml(m.dosage)}, ${escapeHtml(m.frequency)} (${m.duration})</div>`).join("")}
+              </div>
+            </td>
+            <td><span class="badge ${p.dispense_status === 'Dispensed' ? 'badge-completed' : 'badge-pending'}">${p.dispense_status}</span></td>
+          </tr>
+        `).join("") : '<tr><td colspan="5" class="text-center text-muted">No prescriptions issued yet.</td></tr>';
+      }
+    } catch(e) { console.error(e); }
+
+    // 3. Lab Reports
+    try {
+      const res = await fetch("/api/laboratory/reports");
+      const json = await res.json();
+      const tbody = document.getElementById("myLabReportsBody");
+      if (json.success && tbody) {
+        tbody.innerHTML = json.data.length ? json.data.map(r => `
+          <tr>
+            <td><strong>${r.report_id}</strong></td>
+            <td><strong>${escapeHtml(r.test_name)}</strong></td>
+            <td>${r.ordered_date}</td>
+            <td><span class="badge ${r.status === 'Completed' ? 'badge-completed' : 'badge-pending'}">${r.status}</span></td>
+            <td>
+              ${r.status === 'Completed' && r.results ? `
+                <div style="font-size:12px; color:var(--text-main);">
+                  ${Object.entries(r.results).map(([k,v]) => `${k}: ${v}`).join("<br>")}
+                </div>
+              ` : '<span class="text-muted" style="font-size:12px;">Analysis in progress by laboratory</span>'}
+            </td>
+          </tr>
+        `).join("") : '<tr><td colspan="5" class="text-center text-muted">No laboratory tests requested.</td></tr>';
+      }
+    } catch(e) { console.error(e); }
+
+    // 4. Bills
+    try {
+      const res = await fetch("/api/bills");
+      const json = await res.json();
+      const tbody = document.getElementById("myBillsBody");
+      if (json.success && tbody) {
+        tbody.innerHTML = json.data.length ? json.data.map(b => `
+          <tr>
+            <td><strong>${b.bill_id}</strong></td>
+            <td>${b.bill_date}</td>
+            <td><strong>$${b.total_amount.toFixed(2)}</strong></td>
+            <td>$${b.paid_amount.toFixed(2)}</td>
+            <td><span class="badge ${b.status === 'Paid' ? 'badge-paid' : 'badge-pending'}">${b.status}</span></td>
+            <td>
+              ${b.status !== 'Paid' ? `
+                <button class="btn btn-sm btn-success" onclick="payMyBill('${b.bill_id}')">Pay Online Now</button>
+              ` : '<span class="badge badge-completed">Paid Receipt</span>'}
+            </td>
+          </tr>
+        `).join("") : '<tr><td colspan="6" class="text-center text-muted">No invoices generated.</td></tr>';
+      }
+    } catch(e) { console.error(e); }
+  }
+
+  async function payMyBill(billId) {
+    if (!confirm(`Confirm online payment for invoice ${billId}?`)) return;
+    try {
+      const res = await fetch(`/api/bills/${billId}/pay`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ payment_method: "Patient Portal Card Payment" })
+      });
+      const json = await res.json();
+      if (json.success) {
+        alert("✓ Thank you! Payment processed successfully.");
+        loadPatientPortalData();
+      } else {
+        alert(json.message);
+      }
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadPatientPortalData();
+  });
+</script>
+
+</body>
+</html>

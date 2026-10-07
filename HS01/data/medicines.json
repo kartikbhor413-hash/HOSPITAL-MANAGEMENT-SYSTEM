@@ -1,0 +1,80 @@
+[
+  {
+    "medicine_id": "MED001",
+    "name": "Amoxicillin 500mg",
+    "generic_name": "Amoxicillin Trihydrate",
+    "category": "Antibiotic",
+    "form": "Capsule",
+    "stock_quantity": 420,
+    "min_threshold": 50,
+    "unit_price": 12.5,
+    "batch_number": "AMX-2026-A1",
+    "expiry_date": "2027-08-31",
+    "status": "IN_STOCK"
+  },
+  {
+    "medicine_id": "MED002",
+    "name": "Paracetamol 650mg",
+    "generic_name": "Acetaminophen",
+    "category": "Analgesic & Antipyretic",
+    "form": "Tablet",
+    "stock_quantity": 850,
+    "min_threshold": 100,
+    "unit_price": 4.0,
+    "batch_number": "PCM-2026-B4",
+    "expiry_date": "2028-01-15",
+    "status": "IN_STOCK"
+  },
+  {
+    "medicine_id": "MED003",
+    "name": "Amlodipine 5mg",
+    "generic_name": "Amlodipine Besylate",
+    "category": "Antihypertensive",
+    "form": "Tablet",
+    "stock_quantity": 28,
+    "min_threshold": 40,
+    "unit_price": 9.2,
+    "batch_number": "AML-2025-C9",
+    "expiry_date": "2027-04-30",
+    "status": "LOW_STOCK"
+  },
+  {
+    "medicine_id": "MED004",
+    "name": "Metformin 500mg",
+    "generic_name": "Metformin HCl",
+    "category": "Antidiabetic",
+    "form": "Tablet",
+    "stock_quantity": 600,
+    "min_threshold": 80,
+    "unit_price": 7.5,
+    "batch_number": "MET-2026-D2",
+    "expiry_date": "2026-10-25",
+    "status": "EXPIRING_SOON"
+  },
+  {
+    "medicine_id": "MED005",
+    "name": "Atorvastatin 20mg",
+    "generic_name": "Atorvastatin Calcium",
+    "category": "Lipid-lowering",
+    "form": "Tablet",
+    "stock_quantity": 210,
+    "min_threshold": 50,
+    "unit_price": 15.0,
+    "batch_number": "ATV-2026-E7",
+    "expiry_date": "2027-11-20",
+    "status": "IN_STOCK"
+  },
+  {
+    "medicine_id": "MED006",
+    "name": "Ceftriaxone 1g IV",
+    "generic_name": "Ceftriaxone Sodium",
+    "category": "Injectable Antibiotic",
+    "form": "Vial",
+    "stock_quantity": 12,
+    "min_threshold": 30,
+    "unit_price": 45.0,
+    "batch_number": "CTX-2025-V1",
+    "expiry_date": "2026-10-18",
+    "status": "EXPIRING_SOON"
+  }
+]

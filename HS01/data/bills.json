@@ -1,0 +1,50 @@
+[
+  {
+    "bill_id": "BILL001",
+    "patient_id": "PAT004",
+    "patient_name": "Marcus Vance",
+    "bill_date": "2026-10-04",
+    "consultation_fee": 110.0,
+    "bed_charge": 300.0,
+    "days_occupied": 3,
+    "lab_charges": 110.0,
+    "medicine_charges": 68.0,
+    "subtotal": 588.0,
+    "discount": 38.0,
+    "total_amount": 550.0,
+    "paid_amount": 550.0,
+    "status": "Paid",
+    "payment_method": "Credit Card",
+    "breakdown": {
+      "consultation": 110.0,
+      "bed": 300.0,
+      "lab": 110.0,
+      "medicines": 68.0,
+      "discount": 38.0
+    }
+  },
+  {
+    "bill_id": "BILL002",
+    "patient_id": "PAT001",
+    "patient_name": "Alice Montgomery",
+    "bill_date": "2026-09-15",
+    "consultation_fee": 120.0,
+    "bed_charge": 0.0,
+    "days_occupied": 0,
+    "lab_charges": 45.0,
+    "medicine_charges": 490.0,
+    "subtotal": 655.0,
+    "discount": 0.0,
+    "total_amount": 655.0,
+    "paid_amount": 655.0,
+    "status": "Paid",
+    "payment_method": "Cash",
+    "breakdown": {
+      "consultation": 120.0,
+      "bed": 0.0,
+      "lab": 45.0,
+      "medicines": 490.0,
+      "discount": 0.0
+    }
+  }
+]

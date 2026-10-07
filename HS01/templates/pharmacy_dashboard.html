@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central Pharmacy &amp; Inventory - SHMS</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="app-wrapper">
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="/static/images/hospital_icon.png" alt="Hospital Center Logo" style="height: 38px; width: 38px; object-fit: contain; background: white; padding: 4px; border-radius: var(--radius-sm);">
+      <div>
+        <div class="sidebar-title">HOSPITAL CENTER</div>
+        <div class="sidebar-subtitle">Pharmacy</div>
+      </div>
+    </div>
+
+    <ul class="sidebar-menu">
+      <div class="menu-section-label">Pharmacy Console</div>
+      <li class="menu-item active"><a href="/dashboard/pharmacy"><span class="menu-icon">📦</span> Stock &amp; Inventory</a></li>
+      <li class="menu-item"><a href="#pendingRxSection"><span class="menu-icon">📋</span> Dispense Prescriptions</a></li>
+
+      <div class="menu-section-label">Other Portals</div>
+      <li class="menu-item"><a href="/dashboard/admin"><span class="menu-icon">👑</span> Admin Overview</a></li>
+      <li class="menu-item"><a href="/dashboard/doctor"><span class="menu-icon">🩺</span> Doctor Desk</a></li>
+      <li class="menu-item"><a href="/dashboard/laboratory"><span class="menu-icon">🧪</span> Diagnostic Lab</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-mini-card">
+        <div class="user-avatar" style="background: linear-gradient(135deg, #10b981, #059669);">PHA</div>
+        <div class="user-info">
+          <div class="user-name">{{ current_user.name if current_user else 'Johnathan Green' }}</div>
+          <span class="user-role-badge">Chief Pharmacist</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT -->
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title">Hospital Pharmacy &amp; Pharmaceutical Inventory</h1>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-primary btn-sm" onclick="openModal('newMedicineModal')">+ Add New Medicine</button>
+        <button class="btn btn-secondary btn-sm" onclick="handleLogout()">Sign Out</button>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <!-- DYNAMIC INVENTORY & EXPIRY WARNING ALERT -->
+      <div id="pharmacyWarningBanner" class="card" style="border-left: 4px solid var(--warning); background: #fffbeb; display: none;">
+        <div class="card-body" style="padding: 16px 20px;">
+          <h4 style="font-size: 14px; font-weight: 700; color: #b45309; margin-bottom: 4px;">⚠️ Active Inventory Attention Required:</h4>
+          <p id="pharmacyWarningText" style="font-size: 13px; color: #92400e; margin: 0;"></p>
+        </div>
+      </div>
+
+      <!-- MEDICINE INVENTORY MASTER TABLE -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📦 Pharmaceutical Stock &amp; Expiry Monitor</div>
+          <button class="btn btn-secondary btn-sm" onclick="loadPharmacyData()">🔄 Refresh Inventory</button>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Item Code</th>
+                <th>Brand &amp; Generic Name</th>
+                <th>Category</th>
+                <th>Stock / Threshold</th>
+                <th>Unit Price</th>
+                <th>Expiry Date</th>
+                <th>Stock Status</th>
+              </tr>
+            </thead>
+            <tbody id="pharmacyInventoryTableBody">
+              <tr><td colspan="7" class="text-center text-muted">Loading medicines...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DISPENSE PRESCRIPTIONS SECTION -->
+      <div class="card" id="pendingRxSection">
+        <div class="card-header">
+          <div class="card-title">📋 Electronic Prescriptions &amp; Stock Dispensing Queue</div>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Rx Code</th>
+                <th>Patient ID</th>
+                <th>Date Prescribed</th>
+                <th>Prescribed Medications</th>
+                <th>Total Value</th>
+                <th>Dispense Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="pendingRxTableBody">
+              <tr><td colspan="7" class="text-center text-muted">Loading prescriptions...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     MODAL: ADD NEW MEDICINE
+     ========================================================================= -->
+<div id="newMedicineModal" class="modal-backdrop">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Add Medicine to Central Inventory</h3>
+      <button class="modal-close" onclick="closeModal('newMedicineModal')">&times;</button>
+    </div>
+    <form id="newMedicineForm">
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Brand Name *</label>
+            <input type="text" id="med_name" class="form-control" required placeholder="e.g. Ciprofloxacin 500mg">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Generic Compound</label>
+            <input type="text" id="med_generic" class="form-control" placeholder="Ciprofloxacin Hydrochloride">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <input type="text" id="med_category" class="form-control" placeholder="Antibiotic, Analgesic...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dosage Form</label>
+            <select id="med_form" class="form-control">
+              <option value="Tablet">Tablet</option>
+              <option value="Capsule">Capsule</option>
+              <option value="Syrup">Syrup</option>
+              <option value="Vial / Injection">Vial / Injection</option>
+              <option value="Ointment">Ointment</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Initial Stock Quantity *</label>
+            <input type="number" id="med_stock" class="form-control" required placeholder="100" min="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Minimum Alert Threshold *</label>
+            <input type="number" id="med_threshold" class="form-control" required placeholder="25" min="1">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Unit Price ($) *</label>
+            <input type="number" id="med_price" class="form-control" required placeholder="14.50" step="0.01">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Batch Number</label>
+            <input type="text" id="med_batch" class="form-control" placeholder="BAT-2026-X9">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Expiration Date *</label>
+            <input type="date" id="med_expiry" class="form-control" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('newMedicineModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save to Inventory</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/static/js/auth.js"></script>
+<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/medical.js"></script>
+
+<script>
+  // Set default expiration date to 1 year ahead
+  const nextYear = new Date();
+  nextYear.setFullYear(nextYear.getFullYear() + 1);
+  document.getElementById("med_expiry").value = nextYear.toISOString().split('T')[0];
+
+  // Watch for dynamic alerts
+  async function checkPharmacyAlerts() {
+    try {
+      const res = await fetch("/api/medicines");
+      const json = await res.json();
+      if (json.success && json.summary) {
+        const s = json.summary;
+        const banner = document.getElementById("pharmacyWarningBanner");
+        const text = document.getElementById("pharmacyWarningText");
+        if (s.low_stock_count > 0 || s.expiring_soon_count > 0 || s.expired_count > 0) {
+          banner.style.display = "block";
+          text.innerHTML = `Identified <strong>${s.low_stock_count}</strong> item(s) below reorder threshold, <strong>${s.expiring_soon_count}</strong> item(s) expiring within 30 days, and <strong>${s.expired_count}</strong> expired item(s).`;
+        } else {
+          banner.style.display = "none";
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  document.getElementById("newMedicineForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const payload = {
+      name: document.getElementById("med_name").value.trim(),
+      generic_name: document.getElementById("med_generic").value.trim(),
+      category: document.getElementById("med_category").value.trim(),
+      form: document.getElementById("med_form").value,
+      stock_quantity: parseInt(document.getElementById("med_stock").value),
+      min_threshold: parseInt(document.getElementById("med_threshold").value),
+      unit_price: parseFloat(document.getElementById("med_price").value),
+      batch_number: document.getElementById("med_batch").value.trim(),
+      expiry_date: document.getElementById("med_expiry").value
+    };
+
+    try {
+      const res = await fetch("/api/medicines", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if (json.success) {
+        alert("✓ Medicine added to pharmacy stock.");
+        closeModal("newMedicineModal");
+        e.target.reset();
+        loadPharmacyData();
+        checkPharmacyAlerts();
+      } else {
+        alert(`⚠️ ${json.message}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error saving medicine.");
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    checkPharmacyAlerts();
+  });
+</script>
+
+</body>
+</html>

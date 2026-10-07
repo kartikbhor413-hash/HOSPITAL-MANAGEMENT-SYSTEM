@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Hospital Management System (SHMS)</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .hero-banner {
+      background: 
+        linear-gradient(135deg, rgba(15, 23, 42, 0.88) 0%, rgba(30, 58, 138, 0.82) 50%, rgba(14, 165, 233, 0.78) 100%),
+        url('/static/images/hospital_building.jpg') center center / cover no-repeat;
+      color: white;
+      padding: 95px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-title {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+    .hero-subtitle {
+      font-size: 18px;
+      color: #93c5fd;
+      max-width: 720px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .features-container {
+      max-width: 1200px;
+      margin: -40px auto 60px;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
+    }
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .role-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .role-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-light);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header style="background: white; border-bottom: 1px solid var(--border-color); padding: 14px 36px; display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <img src="/static/images/hospital_logo.png" alt="Hospital Center Health" style="height: 48px; width: auto; object-fit: contain;">
+      <div>
+        <h1 style="font-size: 17px; font-weight: 800; color: var(--text-main); margin: 0; letter-spacing: -0.3px;">HOSPITAL CENTER HEALTH</h1>
+        <p style="font-size: 11px; color: var(--text-muted); margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Smart Clinical Operating System (SHMS)</p>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div style="background: #fee2e2; color: #b91c1c; padding: 6px 14px; border-radius: var(--radius-full); font-size: 13px; font-weight: 700;">
+        🚨 Emergency 24/7: +1 (555) 0199
+      </div>
+      <a href="/login" class="btn btn-primary" style="font-weight: 700;">Portal Sign In &rarr;</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-banner">
+    <div style="display: inline-block; background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); padding: 6px 16px; border-radius: var(--radius-full); font-size: 13px; font-weight: 600; margin-bottom: 20px;">
+      🎓 Academic Final Year Project • Python Flask &amp; JSON Engine
+    </div>
+    <h1 class="hero-title">Smart Hospital Management System</h1>
+    <p class="hero-subtitle">
+      A centralized hospital operating system with Rule-Based Emergency Triage, Automated Inpatient &amp; Outpatient Billing, Dynamic Medicine Inventory, and Role-Based Access Control for 7 medical roles.
+    </p>
+    <div class="hero-actions">
+      <a href="/login" class="btn btn-primary" style="padding: 12px 28px; font-size: 15px;">Launch System Portal &rarr;</a>
+      <a href="#rolesSection" class="btn btn-secondary" style="padding: 12px 24px; font-size: 15px;">Explore 7 RBAC Roles</a>
+    </div>
+  </section>
+
+  <!-- Features & Role Portals Overview -->
+  <main class="features-container" id="rolesSection">
+    <div class="role-grid">
+      <!-- Admin -->
+      <div class="role-card">
+        <div>
+          <div class="stat-icon icon-purple" style="margin-bottom: 16px;">👑</div>
+          <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Administrator</h3>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+            Full hospital oversight, physician scheduling, bed occupancy analytics, financial revenue tracking, and audit activity logging.
+          </p>
+        </div>
+        <a href="/login" class="btn btn-secondary btn-sm" style="width: 100%;">Admin Login &rarr;</a>
+      </div>
+
+      <!-- Doctor -->
+      <div class="role-card">
+        <div>
+          <div class="stat-icon icon-blue" style="margin-bottom: 16px;">🩺</div>
+          <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Physician / Doctor</h3>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+            OPD queues, medical history evaluation, clinical diagnosis records, electronic prescriptions, and diagnostic lab requests.
+          </p>
+        </div>
+        <a href="/login" class="btn btn-secondary btn-sm" style="width: 100%;">Doctor Login &rarr;</a>
+      </div>
+
+      <!-- Nurse -->
+      <div class="role-card">
+        <div>
+          <div class="stat-icon icon-cyan" style="margin-bottom: 16px;">👩‍⚕️</div>
+          <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Nursing Station</h3>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+            Inpatient ward monitoring, vital signs tracking (SpO2, BP, Heart Rate), bed allocation, and post-operative nursing observations.
+          </p>
+        </div>
+        <a href="/login" class="btn btn-secondary btn-sm" style="width: 100%;">Nurse Login &rarr;</a>
+      </div>
+
+      <!-- Receptionist -->
+      <div class="role-card">
+        <div>
+          <div class="stat-icon icon-green" style="margin-bottom: 16px;">📋</div>
+          <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Reception &amp; OPD</h3>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+            Patient registration, live doctor schedule checking, appointment booking with token numbers, and bed occupancy enquiry.
+          </p>
+        </div>
+        <a href="/login" class="btn btn-secondary btn-sm" style="width: 100%;">Receptionist Login &rarr;</a>
+      </div>
+
+      <!-- Laboratory -->
+      <div class="role-card">
+        <div>
+          <div class="stat-icon icon-amber" style="margin-bottom: 16px;">🧪</div>
+          <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Diagnostic Pathology</h3>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+            Pathology and radiology test queue, test report generation, entering clinical findings, and verified electronic signatures.
+          </p>
+        </div>
+        <a href="/login" class="btn btn-secondary btn-sm" style="width: 100%;">Laboratory Login &rarr;</a>
+      </div>
+
+      <!-- Pharmacy -->
+      <div class="role-card">
+        <div>
+          <div class="stat-icon icon-green" style="margin-bottom: 16px;">💊</div>
+          <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Central Pharmacy</h3>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+            Medicine inventory management, automated low-stock warnings, 30-day expiration alerts, and prescription dispensing.
+          </p>
+        </div>
+        <a href="/login" class="btn btn-secondary btn-sm" style="width: 100%;">Pharmacy Login &rarr;</a>
+      </div>
+
+      <!-- Patient -->
+      <div class="role-card">
+        <div>
+          <div class="stat-icon icon-blue" style="margin-bottom: 16px;">👤</div>
+          <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Patient Portal</h3>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+            Personalized dashboard: view scheduled appointments, digital prescriptions, laboratory test reports, and download hospital bills.
+          </p>
+        </div>
+        <a href="/login" class="btn btn-secondary btn-sm" style="width: 100%;">Patient Login &rarr;</a>
+      </div>
+
+      <!-- Smart Features Box -->
+      <div class="role-card" style="background: linear-gradient(135deg, #1e3a8a, #1e40af); color: white;">
+        <div>
+          <div class="stat-icon" style="background: rgba(255,255,255,0.2); color: white; margin-bottom: 16px;">⚡</div>
+          <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px; color: white;">Core Smart Algorithms</h3>
+          <p style="font-size: 13px; color: #bfdbfe; line-height: 1.5; margin-bottom: 16px;">
+            • Rule-Based Emergency Triage<br>
+            • Automated Multi-factor Billing<br>
+            • Thread-Safe Atomic JSON Locking<br>
+            • Expiry &amp; Low Stock Watcher
+          </p>
+        </div>
+        <a href="/login" class="btn btn-primary" style="background: white; color: var(--primary); width: 100%;">Launch System &rarr;</a>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #0f172a; color: #94a3b8; text-align: center; padding: 28px; font-size: 13px;">
+    Smart Hospital Management System (SHMS) • Final Year Engineering &amp; Computer Science Project • Powered by Python Flask
+  </footer>
+
+</body>
+</html>

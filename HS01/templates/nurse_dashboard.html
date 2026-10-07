@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nursing Station &amp; Ward Care - SHMS</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="app-wrapper">
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="/static/images/hospital_icon.png" alt="Hospital Center Logo" style="height: 38px; width: 38px; object-fit: contain; background: white; padding: 4px; border-radius: var(--radius-sm);">
+      <div>
+        <div class="sidebar-title">HOSPITAL CENTER</div>
+        <div class="sidebar-subtitle">Nursing Station</div>
+      </div>
+    </div>
+
+    <ul class="sidebar-menu">
+      <div class="menu-section-label">Ward Care</div>
+      <li class="menu-item active"><a href="/dashboard/nurse"><span class="menu-icon">🛏️</span> Ward &amp; Bed Monitor</a></li>
+
+      <div class="menu-section-label">Other Portals</div>
+      <li class="menu-item"><a href="/dashboard/admin"><span class="menu-icon">👑</span> Admin Overview</a></li>
+      <li class="menu-item"><a href="/dashboard/doctor"><span class="menu-icon">👨‍⚕️</span> Doctor OPD</a></li>
+      <li class="menu-item"><a href="/dashboard/receptionist"><span class="menu-icon">📋</span> Reception Desk</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-mini-card">
+        <div class="user-avatar" style="background: linear-gradient(135deg, #06b6d4, #3b82f6);">NUR</div>
+        <div class="user-info">
+          <div class="user-name">{{ current_user.name if current_user else 'Nurse Sarah Connor' }}</div>
+          <span class="user-role-badge">Nurse, RN</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT -->
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title">Inpatient Ward Management &amp; Bed Census</h1>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-secondary btn-sm" onclick="handleLogout()">Sign Out</button>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <!-- WARD CENSUS METRICS -->
+      <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Total Beds</span>
+            <span class="stat-value" id="nurse-total-beds">--</span>
+            <span class="stat-meta">Hospital Capacity</span>
+          </div>
+          <div class="stat-icon icon-blue">🛏️</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Occupied Beds</span>
+            <span class="stat-value" id="nurse-occupied-beds" style="color:var(--critical);">--</span>
+            <span class="stat-meta">Inpatients Admitted</span>
+          </div>
+          <div class="stat-icon icon-red">👤</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Available Beds</span>
+            <span class="stat-value" id="nurse-avail-beds" style="color:var(--success);">--</span>
+            <span class="stat-meta">Ready for Admission</span>
+          </div>
+          <div class="stat-icon icon-green">✓</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">ICU Available</span>
+            <span class="stat-value" id="nurse-icu-beds">--</span>
+            <span class="stat-meta">Critical Care Reserve</span>
+          </div>
+          <div class="stat-icon icon-purple">⚡</div>
+        </div>
+      </div>
+
+      <!-- ALL BEDS MASTER TABLE -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🛏️ Hospital Ward Bed Roster &amp; Allocation Status</div>
+          <button class="btn btn-secondary btn-sm" onclick="loadNurseBeds()">🔄 Refresh Beds</button>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Bed ID</th>
+                <th>Bed Number</th>
+                <th>Ward / Care Unit</th>
+                <th>Daily Rate</th>
+                <th>Status</th>
+                <th>Current Inpatient</th>
+                <th>Admission Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="nurseBedsTableBody">
+              <tr><td colspan="8" class="text-center text-muted">Loading bed census...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     MODAL: ALLOCATE BED TO PATIENT
+     ========================================================================= -->
+<div id="allocateBedModal" class="modal-backdrop">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">🛏️ Inpatient Bed Allocation</h3>
+      <button class="modal-close" onclick="closeModal('allocateBedModal')">&times;</button>
+    </div>
+    <form id="allocateBedForm">
+      <div class="modal-body">
+        <input type="hidden" id="alloc_bed_id">
+        <div style="background:#eff6ff; padding:12px; border-radius:var(--radius-sm); margin-bottom:16px;">
+          <strong>Target Bed:</strong> <span id="alloc_bed_number" style="font-weight:700; color:var(--primary);"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Patient ID *</label>
+          <input type="text" id="alloc_patient_id" class="form-control" required placeholder="e.g. PAT001, PAT002">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('allocateBedModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Allocate &amp; Admit Patient</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="/static/js/auth.js"></script>
+<script src="/static/js/dashboard.js"></script>
+
+<script>
+  async function loadNurseBeds() {
+    const tbody = document.getElementById("nurseBedsTableBody");
+    if (!tbody) return;
+
+    try {
+      const res = await fetch("/api/beds");
+      const json = await res.json();
+      if (!json.success) return;
+
+      const sum = json.summary;
+      document.getElementById("nurse-total-beds").textContent = sum.total_beds;
+      document.getElementById("nurse-occupied-beds").textContent = sum.occupied_beds;
+      document.getElementById("nurse-avail-beds").textContent = sum.available_beds;
+      document.getElementById("nurse-icu-beds").textContent = sum.icu_available;
+
+      tbody.innerHTML = json.beds.map(b => `
+        <tr>
+          <td><strong>${b.bed_id}</strong></td>
+          <td><span style="font-size:15px; font-weight:700;">${b.bed_number}</span></td>
+          <td><span class="badge" style="background:#e0f2fe; color:#0369a1;">${b.ward_type}</span></td>
+          <td>$${b.daily_rate}/day</td>
+          <td>
+            <span class="badge ${b.status === 'Occupied' ? 'badge-occupied' : 'badge-available'}">${b.status}</span>
+          </td>
+          <td>
+            ${b.patient_name ? `
+              <div style="font-weight:600;">${escapeHtml(b.patient_name)}</div>
+              <div style="font-size:11px; color:var(--text-muted);">ID: ${b.patient_id}</div>
+            ` : '<span class="text-muted">None</span>'}
+          </td>
+          <td>${b.assigned_date || '--'}</td>
+          <td>
+            ${b.status === 'Available' ? `
+              <button class="btn btn-sm btn-primary" onclick="openAllocateModal('${b.bed_id}', '${b.bed_number}')">Assign Patient</button>
+            ` : `
+              <button class="btn btn-sm btn-danger" onclick="dischargeBed('${b.bed_id}', '${b.bed_number}')">Discharge Patient</button>
+            `}
+          </td>
+        </tr>
+      `).join("");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  function openAllocateModal(bedId, bedNumber) {
+    document.getElementById("alloc_bed_id").value = bedId;
+    document.getElementById("alloc_bed_number").textContent = bedNumber;
+    openModal("allocateBedModal");
+  }
+
+  document.getElementById("allocateBedForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const bedId = document.getElementById("alloc_bed_id").value;
+    const patientId = document.getElementById("alloc_patient_id").value.trim();
+
+    try {
+      const res = await fetch(`/api/beds/${bedId}/allocate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ patient_id: patientId })
+      });
+      const json = await res.json();
+      if (json.success) {
+        alert("✓ Bed assigned successfully!");
+        closeModal("allocateBedModal");
+        e.target.reset();
+        loadNurseBeds();
+      } else {
+        alert(`⚠️ ${json.message}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error allocating bed.");
+    }
+  });
+
+  async function dischargeBed(bedId, bedNumber) {
+    if (!confirm(`Confirm discharge and release bed ${bedNumber}?`)) return;
+
+    try {
+      const res = await fetch(`/api/beds/${bedId}/discharge`, { method: "POST" });
+      const json = await res.json();
+      if (json.success) {
+        alert("✓ Patient discharged and bed marked Available.");
+        loadNurseBeds();
+      } else {
+        alert(`⚠️ ${json.message}`);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadNurseBeds();
+  });
+</script>
+
+</body>
+</html>

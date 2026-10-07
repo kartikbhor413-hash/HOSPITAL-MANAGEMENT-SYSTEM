@@ -1,0 +1,58 @@
+[
+  {
+    "appointment_id": "APT001",
+    "patient_id": "PAT001",
+    "patient_name": "Alice Montgomery",
+    "doctor_id": "DOC001",
+    "doctor_name": "Dr. Sarah Smith, MD",
+    "department": "Cardiology",
+    "appointment_date": "2026-10-07",
+    "time_slot": "10:00 AM",
+    "token_number": 1,
+    "status": "Scheduled",
+    "purpose": "Routine cardiac follow-up and ECG review",
+    "created_at": "2026-10-05 09:30:00"
+  },
+  {
+    "appointment_id": "APT002",
+    "patient_id": "PAT005",
+    "patient_name": "Sophia Martinez",
+    "doctor_id": "DOC004",
+    "doctor_name": "Dr. Lucas Romero, MD",
+    "department": "Pediatrics",
+    "appointment_date": "2026-10-07",
+    "time_slot": "01:00 PM",
+    "token_number": 2,
+    "status": "Scheduled",
+    "purpose": "Seasonal allergy assessment",
+    "created_at": "2026-10-06 11:15:00"
+  },
+  {
+    "appointment_id": "APT003",
+    "patient_id": "PAT002",
+    "patient_name": "Brian K. O'Connor",
+    "doctor_id": "DOC002",
+    "doctor_name": "Dr. Raymond Chen, MS",
+    "department": "Orthopedics",
+    "appointment_date": "2026-10-06",
+    "time_slot": "09:30 AM",
+    "token_number": 1,
+    "status": "Completed",
+    "purpose": "Post-fall right knee pain evaluation",
+    "created_at": "2026-10-03 14:00:00"
+  },
+  {
+    "appointment_id": "APT004",
+    "patient_id": "PAT001",
+    "patient_name": "Alice Montgomery",
+    "doctor_id": "DOC003",
+    "doctor_name": "Dr. Amara Patel, MD",
+    "department": "General Medicine",
+    "appointment_date": "2026-10-08",
+    "time_slot": "10:30 AM",
+    "token_number": 1,
+    "status": "Scheduled",
+    "purpose": "Annual wellness examination",
+    "created_at": "2026-10-07 08:00:00"
+  }
+]

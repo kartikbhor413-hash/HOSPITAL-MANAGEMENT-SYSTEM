@@ -1,0 +1,46 @@
+[
+  {
+    "record_id": "MR001",
+    "patient_id": "PAT001",
+    "doctor_id": "DOC001",
+    "appointment_id": "APT001",
+    "date": "2026-09-15 10:20:00",
+    "symptoms": "Mild palpitations during exertion, occasional shortness of breath.",
+    "vitals": {
+      "blood_pressure": "128/82",
+      "heart_rate": 78,
+      "temperature": 98.4,
+      "spo2": 99,
+      "respiratory_rate": 16,
+      "weight_kg": 64.5
+    },
+    "diagnosis": "Mild Sinus Tachycardia with benign palpitations.",
+    "doctor_notes": "Advised stress reduction, caffeine reduction, and hydration. Follow-up in 3 weeks.",
+    "prescription_id": "RX001",
+    "lab_order_ids": [
+      "REP001"
+    ]
+  },
+  {
+    "record_id": "MR002",
+    "patient_id": "PAT002",
+    "doctor_id": "DOC002",
+    "appointment_id": "APT003",
+    "date": "2026-10-04 10:00:00",
+    "symptoms": "Acute right knee joint pain following sports fall. Inability to bear full weight.",
+    "vitals": {
+      "blood_pressure": "138/88",
+      "heart_rate": 84,
+      "temperature": 98.7,
+      "spo2": 97,
+      "respiratory_rate": 18,
+      "weight_kg": 82.0
+    },
+    "diagnosis": "Right Knee Meniscal Strain with moderate joint effusion. Admitted for observation & MRI.",
+    "doctor_notes": "Immobilize knee. Cold compress 4x daily. Admitted to Orthopedic Ward BED002.",
+    "prescription_id": "RX002",
+    "lab_order_ids": [
+      "REP002"
+    ]
+  }
+]

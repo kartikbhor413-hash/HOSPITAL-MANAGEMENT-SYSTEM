@@ -1,0 +1,47 @@
+[
+  {
+    "test_id": "LAB001",
+    "test_name": "Complete Blood Count (CBC)",
+    "department": "Hematology",
+    "price": 35.0,
+    "normal_range": "WBC: 4.5-11.0 K/uL, RBC: 4.2-5.9 M/uL, Platelets: 150-450 K/uL",
+    "sample_type": "Whole Blood (EDTA)",
+    "turnaround_hours": 3
+  },
+  {
+    "test_id": "LAB002",
+    "test_name": "Comprehensive Metabolic Panel (CMP)",
+    "department": "Biochemistry",
+    "price": 60.0,
+    "normal_range": "Glucose: 70-99 mg/dL, BUN: 7-20 mg/dL, Creatinine: 0.7-1.3 mg/dL",
+    "sample_type": "Serum",
+    "turnaround_hours": 4
+  },
+  {
+    "test_id": "LAB003",
+    "test_name": "Lipid Profile",
+    "department": "Biochemistry",
+    "price": 45.0,
+    "normal_range": "Total Chol: <200 mg/dL, Triglycerides: <150 mg/dL, HDL: >40 mg/dL",
+    "sample_type": "Fasting Serum",
+    "turnaround_hours": 6
+  },
+  {
+    "test_id": "LAB004",
+    "test_name": "Troponin I (Cardiac Marker)",
+    "department": "Pathology / Critical Care",
+    "price": 85.0,
+    "normal_range": "< 0.04 ng/mL",
+    "sample_type": "Heparin Plasma",
+    "turnaround_hours": 1
+  },
+  {
+    "test_id": "LAB005",
+    "test_name": "Digital X-Ray Knee AP/Lateral",
+    "department": "Radiology",
+    "price": 75.0,
+    "normal_range": "Intact joint spaces, no acute displaced fracture",
+    "sample_type": "Imaging",
+    "turnaround_hours": 2
+  }
+]

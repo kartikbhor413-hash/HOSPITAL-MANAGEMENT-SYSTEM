@@ -1,0 +1,90 @@
+[
+  {
+    "bed_id": "BED001",
+    "bed_number": "ICU-01",
+    "ward_type": "ICU",
+    "room_no": "ICU-Pod-A",
+    "daily_rate": 350.0,
+    "status": "Occupied",
+    "patient_id": "PAT003",
+    "patient_name": "Elena Rostova",
+    "assigned_date": "2026-10-06"
+  },
+  {
+    "bed_id": "BED002",
+    "bed_number": "GW-101",
+    "ward_type": "General Ward",
+    "room_no": "Ward-1A",
+    "daily_rate": 100.0,
+    "status": "Occupied",
+    "patient_id": "PAT002",
+    "patient_name": "Brian K. O'Connor",
+    "assigned_date": "2026-10-04"
+  },
+  {
+    "bed_id": "BED003",
+    "bed_number": "ICU-02",
+    "ward_type": "ICU",
+    "room_no": "ICU-Pod-A",
+    "daily_rate": 350.0,
+    "status": "Available",
+    "patient_id": null,
+    "patient_name": null,
+    "assigned_date": null
+  },
+  {
+    "bed_id": "BED004",
+    "bed_number": "ER-BAY-01",
+    "ward_type": "Emergency",
+    "room_no": "Emergency Wing",
+    "daily_rate": 200.0,
+    "status": "Available",
+    "patient_id": null,
+    "patient_name": null,
+    "assigned_date": null
+  },
+  {
+    "bed_id": "BED005",
+    "bed_number": "ER-BAY-02",
+    "ward_type": "Emergency",
+    "room_no": "Emergency Wing",
+    "daily_rate": 200.0,
+    "status": "Occupied",
+    "patient_id": "EMG001",
+    "patient_name": "James Henderson",
+    "assigned_date": "2026-10-07"
+  },
+  {
+    "bed_id": "BED006",
+    "bed_number": "PVT-201",
+    "ward_type": "Private Deluxe",
+    "room_no": "2nd Floor West",
+    "daily_rate": 250.0,
+    "status": "Available",
+    "patient_id": null,
+    "patient_name": null,
+    "assigned_date": null
+  },
+  {
+    "bed_id": "BED007",
+    "bed_number": "GW-102",
+    "ward_type": "General Ward",
+    "room_no": "Ward-1A",
+    "daily_rate": 100.0,
+    "status": "Available",
+    "patient_id": null,
+    "patient_name": null,
+    "assigned_date": null
+  },
+  {
+    "bed_id": "BED008",
+    "bed_number": "GW-103",
+    "ward_type": "General Ward",
+    "room_no": "Ward-1B",
+    "daily_rate": 100.0,
+    "status": "Available",
+    "patient_id": null,
+    "patient_name": null,
+    "assigned_date": null
+  }
+]

@@ -1,0 +1,53 @@
+[
+  {
+    "emergency_id": "EMG001",
+    "patient_name": "James Henderson",
+    "age": 52,
+    "gender": "Male",
+    "vitals": {
+      "spo2": 82,
+      "systolic_bp": 195,
+      "diastolic_bp": 110,
+      "heart_rate": 132,
+      "temperature": 99.2
+    },
+    "symptoms": "Acute substernal crushing chest pain radiating to left arm, severe diaphoresis.",
+    "consciousness": "Alert",
+    "trauma_level": "None",
+    "priority": "CRITICAL",
+    "triage_score": 9,
+    "reasons": [
+      "Severe Hypoxemia (SpO2 82% < 85%)",
+      "Hypertensive Crisis (Systolic BP 195 > 180 mmHg)"
+    ],
+    "assigned_bed": "BED005",
+    "attending_doctor": "DOC001",
+    "triage_time": "2026-10-07 14:15:00",
+    "status": "Under Care"
+  },
+  {
+    "emergency_id": "EMG002",
+    "patient_name": "Tyler Brooks",
+    "age": 22,
+    "gender": "Male",
+    "vitals": {
+      "spo2": 97,
+      "systolic_bp": 124,
+      "diastolic_bp": 82,
+      "heart_rate": 88,
+      "temperature": 98.6
+    },
+    "symptoms": "Right forearm laceration from broken glass, controlled bleeding.",
+    "consciousness": "Alert",
+    "trauma_level": "Moderate",
+    "priority": "MEDIUM",
+    "triage_score": 3,
+    "reasons": [
+      "Suspected Moderate Fracture / Dislocation or deep cut"
+    ],
+    "assigned_bed": null,
+    "attending_doctor": "DOC002",
+    "triage_time": "2026-10-07 15:30:00",
+    "status": "Waiting"
+  }
+]

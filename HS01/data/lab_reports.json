@@ -1,0 +1,52 @@
+[
+  {
+    "report_id": "REP001",
+    "patient_id": "PAT001",
+    "patient_name": "Alice Montgomery",
+    "doctor_id": "DOC001",
+    "test_id": "LAB003",
+    "test_name": "Lipid Profile",
+    "ordered_date": "2026-09-15 11:00:00",
+    "status": "Completed",
+    "results": {
+      "Total Cholesterol": "188 mg/dL (Normal)",
+      "Triglycerides": "135 mg/dL (Normal)",
+      "HDL Cholesterol": "54 mg/dL (Optimal)",
+      "LDL Cholesterol": "107 mg/dL (Optimal)"
+    },
+    "technician_notes": "All lipid fractions within target range.",
+    "completed_date": "2026-09-15 15:45:00",
+    "cost": 45.0
+  },
+  {
+    "report_id": "REP002",
+    "patient_id": "PAT002",
+    "patient_name": "Brian K. O'Connor",
+    "doctor_id": "DOC002",
+    "test_id": "LAB005",
+    "test_name": "Digital X-Ray Knee AP/Lateral",
+    "ordered_date": "2026-10-04 10:30:00",
+    "status": "Completed",
+    "results": {
+      "Bony Architecture": "No acute fracture or dislocation identified.",
+      "Joint Alignment": "Mild medial compartment joint space narrowing with moderate suprapatellar effusion."
+    },
+    "technician_notes": "Correlate with clinical exam for soft tissue/meniscal involvement.",
+    "completed_date": "2026-10-04 12:15:00",
+    "cost": 75.0
+  },
+  {
+    "report_id": "REP003",
+    "patient_id": "PAT003",
+    "patient_name": "Elena Rostova",
+    "doctor_id": "DOC001",
+    "test_id": "LAB004",
+    "test_name": "Troponin I (Cardiac Marker)",
+    "ordered_date": "2026-10-07 08:30:00",
+    "status": "Pending",
+    "results": {},
+    "technician_notes": "STAT sample received in lab. Processing in progress.",
+    "completed_date": null,
+    "cost": 85.0
+  }
+]

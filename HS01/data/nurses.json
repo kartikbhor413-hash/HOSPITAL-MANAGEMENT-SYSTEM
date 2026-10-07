@@ -1,0 +1,26 @@
+[
+  {
+    "nurse_id": "NUR001",
+    "name": "Nurse Sarah Connor, RN",
+    "department": "ICU & Critical Care",
+    "shift": "Morning (07:00 - 15:00)",
+    "phone": "+1 555-0104",
+    "email": "s.connor@hospital.org",
+    "assigned_wards": [
+      "ICU Ward",
+      "Step-Down Unit"
+    ]
+  },
+  {
+    "nurse_id": "NUR002",
+    "name": "Nurse Liam Gallagher, BSN",
+    "department": "Emergency & Trauma",
+    "shift": "Night (23:00 - 07:00)",
+    "phone": "+1 555-0120",
+    "email": "l.gallagher@hospital.org",
+    "assigned_wards": [
+      "Emergency Triage",
+      "Trauma Bay"
+    ]
+  }
+]

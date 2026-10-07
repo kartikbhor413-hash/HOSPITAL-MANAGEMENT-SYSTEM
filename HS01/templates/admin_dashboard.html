@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Smart Hospital Management System</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="app-wrapper">
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="/static/images/hospital_icon.png" alt="Hospital Center Logo" style="height: 38px; width: 38px; object-fit: contain; background: white; padding: 4px; border-radius: var(--radius-sm);">
+      <div>
+        <div class="sidebar-title">HOSPITAL CENTER</div>
+        <div class="sidebar-subtitle">Administration</div>
+      </div>
+    </div>
+
+    <ul class="sidebar-menu">
+      <div class="menu-section-label">Main Console</div>
+      <li class="menu-item active"><a href="/dashboard/admin"><span class="menu-icon">📊</span> Overview &amp; Analytics</a></li>
+      <li class="menu-item"><a href="#patientsSection"><span class="menu-icon">👥</span> Patient Records</a></li>
+      <li class="menu-item"><a href="#doctorsSection"><span class="menu-icon">🩺</span> Medical Staff</a></li>
+      <li class="menu-item"><a href="#bedsSection"><span class="menu-icon">🛏️</span> Bed Occupancy</a></li>
+      <li class="menu-item"><a href="#emergencySection"><span class="menu-icon">🚨</span> Emergency Triage</a></li>
+      <li class="menu-item"><a href="#billingSection"><span class="menu-icon">💳</span> Hospital Billing</a></li>
+
+      <div class="menu-section-label">Switch Workspaces</div>
+      <li class="menu-item"><a href="/dashboard/doctor"><span class="menu-icon">👨‍⚕️</span> Doctor OPD View</a></li>
+      <li class="menu-item"><a href="/dashboard/nurse"><span class="menu-icon">👩‍⚕️</span> Nurse Station</a></li>
+      <li class="menu-item"><a href="/dashboard/receptionist"><span class="menu-icon">📋</span> Reception / Token</a></li>
+      <li class="menu-item"><a href="/dashboard/laboratory"><span class="menu-icon">🧪</span> Diagnostic Lab</a></li>
+      <li class="menu-item"><a href="/dashboard/pharmacy"><span class="menu-icon">💊</span> Pharmacy Inventory</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-mini-card">
+        <div class="user-avatar">ADM</div>
+        <div class="user-info">
+          <div class="user-name">{{ current_user.name if current_user else 'Admin' }}</div>
+          <span class="user-role-badge">Administrator</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT -->
+  <div class="main-content">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title">Executive Hospital Operations &amp; Analytics</h1>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-primary btn-sm" onclick="openModal('newPatientModal')">+ Register Patient</button>
+        <button class="btn btn-secondary btn-sm" onclick="openModal('generateBillModal')">💳 Auto-Bill Engine</button>
+        <button class="btn btn-secondary btn-sm" onclick="handleLogout()">Sign Out</button>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <!-- Hospital Complex Facility Banner -->
+      <div class="card" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.90) 0%, rgba(30, 58, 138, 0.85) 60%, rgba(14, 165, 233, 0.78) 100%), url('/static/images/hospital_building.jpg') center right / cover no-repeat; color: white; border: none; padding: 24px 30px; margin-bottom: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <span class="badge" style="background: rgba(255, 255, 255, 0.2); color: white; font-weight: 700; margin-bottom: 8px;">Main Clinical Campus</span>
+            <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 4px; color: white;">Hospital Center Health — Metropolis Complex</h2>
+            <p style="font-size: 13.5px; color: #cbd5e1; margin: 0;">Level 1 Trauma Center, Inpatient Care Units &amp; Smart Clinical Operations</p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <span style="display: flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, 0.25); border: 1px solid rgba(16, 185, 129, 0.4); color: #6ee7b7; padding: 6px 14px; border-radius: var(--radius-full); font-size: 12.5px; font-weight: 700;">
+              <span class="live-indicator-dot"></span> Facility Online &amp; Operational
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Emergency Alert Banner (Driven by Emergency Priority Engine) -->
+      <div id="emergencyAlertBanner" class="emergency-alert-banner" style="display: none;">
+        <div class="alert-text">
+          <span style="font-size: 20px;">⚠️</span>
+          <span id="emergencyAlertMessage">CRITICAL ALERT: Emergency alert message</span>
+        </div>
+        <a href="#emergencySection" class="btn btn-secondary btn-sm" style="background: white; color: var(--critical);">View Triage Bay &rarr;</a>
+      </div>
+
+      <!-- 8 KEY KPI SUMMARY METRIC CARDS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Total Patients</span>
+            <span class="stat-value" id="stat-patients">--</span>
+            <span class="stat-meta">Active registered</span>
+          </div>
+          <div class="stat-icon icon-blue">👥</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Active Doctors</span>
+            <span class="stat-value" id="stat-doctors">--</span>
+            <span class="stat-meta">Across 4 departments</span>
+          </div>
+          <div class="stat-icon icon-purple">🩺</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Today's OPD Queue</span>
+            <span class="stat-value" id="stat-today-apts">--</span>
+            <span class="stat-meta"><span id="stat-pending-apts">--</span> pending visits</span>
+          </div>
+          <div class="stat-icon icon-cyan">📅</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Bed Occupancy</span>
+            <span class="stat-value" id="stat-bed-rate">--%</span>
+            <span class="stat-meta"><span id="stat-beds-avail">--</span> beds available</span>
+          </div>
+          <div class="stat-icon icon-green">🛏️</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Emergency Cases</span>
+            <span class="stat-value" id="stat-emergency" style="color: var(--critical);">--</span>
+            <span class="stat-meta"><span id="stat-critical">--</span> critical triage</span>
+          </div>
+          <div class="stat-icon icon-red">🚨</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Pending Lab Tests</span>
+            <span class="stat-value" id="stat-lab-pending">--</span>
+            <span class="stat-meta">In pathology backlog</span>
+          </div>
+          <div class="stat-icon icon-amber">🧪</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Medicine Alerts</span>
+            <span class="stat-value" id="stat-med-alert" style="color: var(--warning);">--</span>
+            <span class="stat-meta">Low stock or expiring</span>
+          </div>
+          <div class="stat-icon icon-amber">💊</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Hospital Revenue</span>
+            <span class="stat-value" id="stat-revenue" style="color: var(--success);">--</span>
+            <span class="stat-meta">Today: <span id="stat-today-rev">--</span></span>
+          </div>
+          <div class="stat-icon icon-green">💰</div>
+        </div>
+      </div>
+
+      <!-- BED OCCUPANCY GAUGE BAR -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="card-header">
+          <div class="card-title">🛏️ Hospital Ward Capacity &amp; Resource Allocation</div>
+          <span style="font-size: 13px; color: var(--text-muted);">Real-time bed utilization tracking</span>
+        </div>
+        <div class="card-body">
+          <div style="background: #e2e8f0; height: 14px; border-radius: 7px; overflow: hidden; margin-bottom: 12px;">
+            <div id="bedProgressBar" style="width: 0%; height: 100%; transition: width 0.5s ease; background-color: var(--success);"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 13px;">
+            <div>Total Capacity: <strong>8 Beds</strong></div>
+            <div>Occupied: <strong id="stat-beds-occ">--</strong></div>
+            <div>Available: <strong id="stat-beds-avail">--</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TWO-COLUMN WORKFLOW GRID: ACTIVITY LOGS & DEPARTMENT DISTRIBUTION -->
+      <div style="display: grid; grid-template-columns: 2fr 1.2fr; gap: 24px; margin-bottom: 28px;">
+        <!-- Live Audit Activity Feed -->
+        <div class="card" style="margin-bottom: 0;">
+          <div class="card-header">
+            <div class="card-title">📜 Real-Time Audit Activity Feed</div>
+            <span class="badge badge-scheduled">Live JSON Logging</span>
+          </div>
+          <div class="card-body" style="max-height: 320px; overflow-y: auto;">
+            <ul id="activityFeed" class="activity-feed">
+              <p class="text-muted" style="font-size: 13px;">Loading system logs...</p>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Department Breakdown -->
+        <div class="card" style="margin-bottom: 0;">
+          <div class="card-header">
+            <div class="card-title">🏥 Clinical Departments</div>
+          </div>
+          <div class="card-body" id="deptDistribution">
+            <p class="text-muted" style="font-size: 13px;">Loading departments...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: EMERGENCY TRIAGE MONITOR -->
+      <div class="card" id="emergencySection">
+        <div class="card-header">
+          <div class="card-title">🚨 Smart Emergency Priority Triage Queue</div>
+          <button class="btn btn-danger btn-sm" onclick="openModal('emergencyTriageModal')">+ Incoming Emergency Patient</button>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Emergency ID</th>
+                <th>Patient Name</th>
+                <th>Priority</th>
+                <th>Triage Score</th>
+                <th>Clinical Reasons / Vital Signs</th>
+                <th>Assigned Bed</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="emergencyTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECTION: PATIENT DIRECTORY -->
+      <div class="card" id="patientsSection">
+        <div class="card-header">
+          <div class="card-title">👥 Central Patient Master Index</div>
+          <div style="display: flex; gap: 12px;">
+            <input type="text" id="patientSearchInput" class="form-control" placeholder="Search by ID, name, phone..." style="width: 250px; padding: 6px 12px; font-size: 13px;">
+            <button class="btn btn-primary btn-sm" onclick="openModal('newPatientModal')">+ Register Patient</button>
+          </div>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Patient ID</th>
+                <th>Full Name &amp; Email</th>
+                <th>Age / Gender</th>
+                <th>Blood Group</th>
+                <th>Phone Number</th>
+                <th>Care Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="patientsTableBody">
+              <tr><td colspan="7" class="text-center text-muted">Loading patients...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECTION: BILLING RECORDS -->
+      <div class="card" id="billingSection">
+        <div class="card-header">
+          <div class="card-title">💳 Financial Ledger &amp; Invoices</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('generateBillModal')">+ Calculate &amp; Generate Bill</button>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Bill ID</th>
+                <th>Patient</th>
+                <th>Bill Date</th>
+                <th>Total Amount</th>
+                <th>Paid Amount</th>
+                <th>Payment Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="billsTableBody">
+              <tr><td colspan="7" class="text-center text-muted">Loading billing ledger...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     MODALS
+     ========================================================================= -->
+
+<!-- MODAL: REGISTER NEW PATIENT -->
+<div id="newPatientModal" class="modal-backdrop">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Register New Patient</h3>
+      <button class="modal-close" onclick="closeModal('newPatientModal')">&times;</button>
+    </div>
+    <form id="newPatientForm">
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input type="text" id="pat_name" class="form-control" required placeholder="e.g. John Doe">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number *</label>
+            <input type="text" id="pat_phone" class="form-control" required placeholder="+1 555-0199">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Age</label>
+            <input type="number" id="pat_age" class="form-control" placeholder="35" min="1" max="120">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gender</label>
+            <select id="pat_gender" class="form-control">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Blood Group</label>
+            <select id="pat_blood" class="form-control">
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="pat_email" class="form-control" placeholder="john.doe@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Emergency Contact (Name &amp; Phone)</label>
+          <input type="text" id="pat_emergency" class="form-control" placeholder="Mary Doe (+1 555-0198)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Residential Address</label>
+          <input type="text" id="pat_address" class="form-control" placeholder="123 Hospital St">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Allergies (comma separated)</label>
+            <input type="text" id="pat_allergies" class="form-control" placeholder="Penicillin, Peanuts">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Chronic Conditions</label>
+            <input type="text" id="pat_chronic" class="form-control" placeholder="Hypertension, Asthma">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('newPatientModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Patient Record</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: PATIENT PROFILE LOOKUP -->
+<div id="patientProfileModal" class="modal-backdrop">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-header">
+      <h3 class="modal-title">Comprehensive Patient Medical Dossier</h3>
+      <button class="modal-close" onclick="closeModal('patientProfileModal')">&times;</button>
+    </div>
+    <div class="modal-body" id="patientProfileBody">
+      <p class="text-muted">Loading profile...</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" onclick="closeModal('patientProfileModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: INCOMING EMERGENCY TRIAGE -->
+<div id="emergencyTriageModal" class="modal-backdrop">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">🚨 Emergency Patient Triage Assessment</h3>
+      <button class="modal-close" onclick="closeModal('emergencyTriageModal')">&times;</button>
+    </div>
+    <form id="emergencyTriageForm">
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Patient Name *</label>
+            <input type="text" id="emg_name" class="form-control" required placeholder="Patient Name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Age</label>
+            <input type="number" id="emg_age" class="form-control" placeholder="45">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">SpO2 (Oxygen %)</label>
+            <input type="number" id="emg_spo2" class="form-control" placeholder="84 (Normal: 95-100)" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Systolic BP (mmHg)</label>
+            <input type="number" id="emg_sbp" class="form-control" placeholder="185 (Normal: 90-120)" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Heart Rate (bpm)</label>
+            <input type="number" id="emg_hr" class="form-control" placeholder="135 (Normal: 60-100)">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Consciousness Level</label>
+            <select id="emg_consciousness" class="form-control">
+              <option value="Alert">Alert</option>
+              <option value="Voice Responsive">Voice Responsive</option>
+              <option value="Pain Responsive">Pain Responsive</option>
+              <option value="Unconscious">Unconscious / Unresponsive</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Trauma Severity</label>
+            <select id="emg_trauma" class="form-control">
+              <option value="None">None</option>
+              <option value="Moderate">Moderate</option>
+              <option value="Severe">Severe Polytrauma</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Presenting Symptoms</label>
+          <textarea id="emg_symptoms" class="form-control" rows="2" placeholder="e.g. Severe chest pain, diaphoresis, shortness of breath"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('emergencyTriageModal')">Cancel</button>
+        <button type="submit" class="btn btn-danger">Run Emergency Classifier &rarr;</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: AUTO-BILLING ENGINE -->
+<div id="generateBillModal" class="modal-backdrop">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">💳 Automated Multi-Factor Billing Engine</h3>
+      <button class="modal-close" onclick="closeModal('generateBillModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Target Patient ID</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="calc_patient_id" class="form-control" placeholder="e.g. PAT001, PAT002">
+          <button type="button" id="calculateBillBtn" class="btn btn-primary" style="white-space: nowrap;">Calculate Total</button>
+        </div>
+      </div>
+
+      <div id="billingBreakdownContainer" style="display: none; background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 16px; margin-top: 16px;">
+        <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">Itemized Bill Breakdown:</h4>
+        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+          <span>1. Doctor Consultation Fee:</span>
+          <strong id="calc_consultation">$0.00</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+          <span>2. Bed Daily Rate &times; Days Occupied:</span>
+          <strong id="calc_bed">$0.00</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+          <span>3. Diagnostic Laboratory Tests:</span>
+          <strong id="calc_lab">$0.00</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+          <span>4. Prescribed Pharmacy Medicines:</span>
+          <strong id="calc_pharmacy">$0.00</strong>
+        </div>
+        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 10px 0;">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px;">
+          <span>Subtotal:</span>
+          <strong id="calc_subtotal">$0.00</strong>
+        </div>
+        <div class="form-group" style="margin-bottom: 8px;">
+          <label class="form-label" style="font-size: 12px;">Discount ($)</label>
+          <input type="number" id="bill_discount_input" class="form-control" value="0.00" min="0" step="1">
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: 800; color: var(--primary); margin-top: 8px;">
+          <span>Grand Total Due:</span>
+          <span id="calc_grand_total">$0.00</span>
+        </div>
+
+        <div class="form-row" style="margin-top: 14px;">
+          <div class="form-group">
+            <label class="form-label" style="font-size: 12px;">Payment Method</label>
+            <select id="bill_payment_method" class="form-control">
+              <option value="Cash">Cash</option>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Insurance Claim">Insurance Claim</option>
+            </select>
+          </div>
+          <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-top: 24px;">
+            <input type="checkbox" id="bill_mark_paid" checked>
+            <label for="bill_mark_paid" style="font-size: 13px; cursor: pointer;">Mark as Paid Now</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" onclick="closeModal('generateBillModal')">Cancel</button>
+      <button type="button" id="confirmGenerateBillBtn" class="btn btn-success" disabled>Generate Official Invoice</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: PRINTABLE INVOICE -->
+<div id="printableInvoiceModal" class="modal-backdrop">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-header no-print">
+      <h3 class="modal-title">Hospital Invoice Receipt</h3>
+      <button class="modal-close" onclick="closeModal('printableInvoiceModal')">&times;</button>
+    </div>
+    <div class="modal-body printable-invoice" id="printableInvoiceContent">
+      <!-- Generated Invoice Content -->
+    </div>
+    <div class="modal-footer no-print">
+      <button type="button" class="btn btn-secondary" onclick="closeModal('printableInvoiceModal')">Close</button>
+      <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ Print Invoice</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="/static/js/auth.js"></script>
+<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/patients.js"></script>
+<script src="/static/js/billing.js"></script>
+
+<script>
+  // Load Emergency Bay in Admin Dashboard
+  async function loadEmergencyBay() {
+    const tbody = document.getElementById("emergencyTableBody");
+    if (!tbody) return;
+    try {
+      const res = await fetch("/api/emergency");
+      const json = await res.json();
+      if (json.success && json.data) {
+        tbody.innerHTML = json.data.map(e => `
+          <tr>
+            <td><strong>${e.emergency_id}</strong></td>
+            <td>
+              <div style="font-weight: 600;">${escapeHtml(e.patient_name)}</div>
+              <div style="font-size: 11px; color: var(--text-muted);">${e.age || '--'} yrs • ${e.gender}</div>
+            </td>
+            <td>
+              <span class="badge ${e.priority === 'CRITICAL' ? 'badge-critical' : e.priority === 'HIGH' ? 'badge-high' : e.priority === 'MEDIUM' ? 'badge-medium' : 'badge-low'}">
+                ${e.priority}
+              </span>
+            </td>
+            <td><strong>${e.triage_score}/10</strong></td>
+            <td>
+              <div style="font-size: 12px;">${e.reasons ? e.reasons.join("; ") : e.symptoms}</div>
+              <div style="font-size: 11px; color: var(--text-muted);">SpO2: ${e.vitals?.spo2}% • BP: ${e.vitals?.systolic_bp} mmHg</div>
+            </td>
+            <td>${e.assigned_bed ? `<span class="badge badge-scheduled">${e.assigned_bed}</span>` : '<span class="text-muted">Unassigned</span>'}</td>
+            <td><span class="badge ${e.status === 'Under Care' ? 'badge-critical' : 'badge-completed'}">${e.status}</span></td>
+          </tr>
+        `).join("");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  // Handle incoming emergency form
+  document.getElementById("emergencyTriageForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const payload = {
+      patient_name: document.getElementById("emg_name").value.trim(),
+      age: document.getElementById("emg_age").value,
+      spo2: document.getElementById("emg_spo2").value,
+      systolic_bp: document.getElementById("emg_sbp").value,
+      heart_rate: document.getElementById("emg_hr").value,
+      consciousness: document.getElementById("emg_consciousness").value,
+      trauma_level: document.getElementById("emg_trauma").value,
+      symptoms: document.getElementById("emg_symptoms").value.trim()
+    };
+
+    try {
+      const res = await fetch("/api/emergency", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if (json.success) {
+        const triage = json.triage_evaluation;
+        let alertMsg = `✓ TRIAGE CLASSIFICATION: ${triage.priority}\nTriage Score: ${triage.triage_score}/10\nRecommended Bed: ${triage.recommended_bed_type}\nWait Time: ${triage.estimated_wait_time}`;
+        if (triage.alert) {
+          alertMsg += `\n\n🚨 CRITICAL ALERT:\n${triage.alert}`;
+        }
+        alert(alertMsg);
+        closeModal("emergencyTriageModal");
+        e.target.reset();
+        loadEmergencyBay();
+        loadDashboardStats();
+      } else {
+        alert(json.message);
+      }
+    } catch (err) {
+      alert("Error evaluating emergency case.");
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadEmergencyBay();
+  });
+</script>
+
+</body>
+</html>

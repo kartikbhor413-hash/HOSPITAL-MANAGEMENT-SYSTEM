@@ -1,0 +1,54 @@
+[
+  {
+    "prescription_id": "RX001",
+    "patient_id": "PAT001",
+    "doctor_id": "DOC001",
+    "date": "2026-09-15",
+    "diagnosis": "Mild Sinus Tachycardia",
+    "medicines": [
+      {
+        "medicine_id": "MED005",
+        "medicine_name": "Atorvastatin 20mg",
+        "dosage": "1 tablet",
+        "frequency": "Once daily at bedtime",
+        "duration": "30 days",
+        "quantity": 30,
+        "unit_price": 15.0,
+        "subtotal": 450.0
+      },
+      {
+        "medicine_id": "MED002",
+        "medicine_name": "Paracetamol 650mg",
+        "dosage": "1 tablet",
+        "frequency": "SOS / As needed for headache",
+        "duration": "5 days",
+        "quantity": 10,
+        "unit_price": 4.0,
+        "subtotal": 40.0
+      }
+    ],
+    "total_medicine_charge": 490.0,
+    "dispense_status": "Dispensed"
+  },
+  {
+    "prescription_id": "RX002",
+    "patient_id": "PAT002",
+    "doctor_id": "DOC002",
+    "date": "2026-10-04",
+    "diagnosis": "Right Knee Meniscal Strain",
+    "medicines": [
+      {
+        "medicine_id": "MED002",
+        "medicine_name": "Paracetamol 650mg",
+        "dosage": "1 tablet",
+        "frequency": "Every 8 hours after food",
+        "duration": "7 days",
+        "quantity": 21,
+        "unit_price": 4.0,
+        "subtotal": 84.0
+      }
+    ],
+    "total_medicine_charge": 84.0,
+    "dispense_status": "Pending"
+  }
+]

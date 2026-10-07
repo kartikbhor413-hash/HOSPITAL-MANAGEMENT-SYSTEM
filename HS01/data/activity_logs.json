@@ -1,0 +1,102 @@
+[
+  {
+    "log_id": "LOG0001",
+    "timestamp": "2026-10-04 10:15:00",
+    "date": "2026-10-04",
+    "time": "10:15:00 AM",
+    "user_id": "USR001",
+    "role": "Admin",
+    "action": "Allocated Bed BED002 to Patient PAT002",
+    "module": "Bed Management"
+  },
+  {
+    "log_id": "LOG0002",
+    "timestamp": "2026-10-04 12:30:00",
+    "date": "2026-10-04",
+    "time": "12:30:00 PM",
+    "user_id": "USR006",
+    "role": "Laboratory",
+    "action": "Completed X-Ray Lab Report REP002 for Patient PAT002",
+    "module": "Laboratory"
+  },
+  {
+    "log_id": "LOG0003",
+    "timestamp": "2026-10-05 09:30:00",
+    "date": "2026-10-05",
+    "time": "09:30:00 AM",
+    "user_id": "USR005",
+    "role": "Receptionist",
+    "action": "Booked Appointment APT001 for Patient PAT001 with Dr. Sarah Smith",
+    "module": "Appointments"
+  },
+  {
+    "log_id": "LOG0004",
+    "timestamp": "2026-10-06 14:00:00",
+    "date": "2026-10-06",
+    "time": "02:00:00 PM",
+    "user_id": "USR001",
+    "role": "Admin",
+    "action": "Admitted Patient PAT003 to Bed BED001 (ICU)",
+    "module": "Bed Management"
+  },
+  {
+    "log_id": "LOG0005",
+    "timestamp": "2026-10-07 14:20:00",
+    "date": "2026-10-07",
+    "time": "02:20:00 PM",
+    "user_id": "USR002",
+    "role": "Doctor",
+    "action": "Triage classified Emergency Case EMG001 as CRITICAL",
+    "module": "Emergency Management"
+  },
+  {
+    "timestamp": "2026-10-07 18:22:48",
+    "date": "2026-10-07",
+    "time": "06:22:48 PM",
+    "user_id": "USR001",
+    "role": "Admin",
+    "action": "User admin logged in",
+    "module": "Authentication",
+    "log_id": "LOG006"
+  },
+  {
+    "timestamp": "2026-10-07 18:23:36",
+    "date": "2026-10-07",
+    "time": "06:23:36 PM",
+    "user_id": "USR001",
+    "role": "Admin",
+    "action": "User admin logged out",
+    "module": "Authentication",
+    "log_id": "LOG007"
+  },
+  {
+    "timestamp": "2026-10-07 18:30:02",
+    "date": "2026-10-07",
+    "time": "06:30:02 PM",
+    "user_id": "USR001",
+    "role": "Admin",
+    "action": "User admin logged in",
+    "module": "Authentication",
+    "log_id": "LOG008"
+  },
+  {
+    "timestamp": "2026-10-07 18:40:34",
+    "date": "2026-10-07",
+    "time": "06:40:34 PM",
+    "user_id": "USR001",
+    "role": "Admin",
+    "action": "User admin logged in",
+    "module": "Authentication",
+    "log_id": "LOG009"
+  },
+  {
+    "timestamp": "2026-10-07 18:40:58",
+    "date": "2026-10-07",
+    "time": "06:40:58 PM",
+    "user_id": "USR001",
+    "role": "Admin",
+    "action": "User admin logged out",
+    "module": "Authentication",
+    "log_id": "LOG010"
+  }
+]

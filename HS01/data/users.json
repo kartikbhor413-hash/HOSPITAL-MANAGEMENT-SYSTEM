@@ -1,0 +1,90 @@
+[
+  {
+    "user_id": "USR001",
+    "username": "admin",
+    "password_hash": "scrypt:32768:8:1$QtjnBEJRmYcCjiXp$7eab7da816663bd0b669bcde2866b5623c03dc46d12a4ede4fe158eb11cf599cd5599aa691f6e8827e313bcd22cf7b9ebe195f3ec3e04ace55be12996232a750",
+    "role": "Admin",
+    "name": "Dr. Arthur Pendelton",
+    "email": "admin@hospital.org",
+    "phone": "+1 555-0100",
+    "associated_id": "ADM001",
+    "is_active": true
+  },
+  {
+    "user_id": "USR002",
+    "username": "doctor_smith",
+    "password_hash": "scrypt:32768:8:1$FmbNpaFhlGFkSKqh$0d90f6ca1efc327b65a17bf8c2684534c076082ffa39b779447b0b8dfa23444eed242e74bdc58ea5306863c78716edb6f00d46e8661be0b3d6049ba702605958",
+    "role": "Doctor",
+    "name": "Dr. Sarah Smith, MD",
+    "email": "s.smith@hospital.org",
+    "phone": "+1 555-0102",
+    "associated_id": "DOC001",
+    "is_active": true
+  },
+  {
+    "user_id": "USR003",
+    "username": "doctor_chen",
+    "password_hash": "scrypt:32768:8:1$NvF8IC3nxGFFWnWx$0ff3bea52822284c164e4853676908388a15c7e70efa2ac7d055cc5524757a926e1f9f12d498cccdbf03b67a92dbbedceebb019b7b501ba2797bb84956fd54da",
+    "role": "Doctor",
+    "name": "Dr. Raymond Chen, MS",
+    "email": "r.chen@hospital.org",
+    "phone": "+1 555-0103",
+    "associated_id": "DOC002",
+    "is_active": true
+  },
+  {
+    "user_id": "USR004",
+    "username": "nurse_sarah",
+    "password_hash": "scrypt:32768:8:1$EWVKHyUnW48Rhj91$39cbb2d004682d9f02ce93e85986731766958eac32f7d32d4336604c76ead6d658b05bb3a6d56734e028a3fda66411e59cb5eaef1b8e75a081d45f6e3dba14ea",
+    "role": "Nurse",
+    "name": "Nurse Sarah Connor, RN",
+    "email": "s.connor@hospital.org",
+    "phone": "+1 555-0104",
+    "associated_id": "NUR001",
+    "is_active": true
+  },
+  {
+    "user_id": "USR005",
+    "username": "reception_jane",
+    "password_hash": "scrypt:32768:8:1$2PlEi3Bmp2h8QaZi$2a4b3e4b8d0fff528083fdecbf72be43c2b203e8bb0459ef9cdeb5476c665acaab44a7ade8c21b8dab5f6b1a04a0b32bd86b9f853a7d63f72b6b1a589f070bdb",
+    "role": "Receptionist",
+    "name": "Jane Wilson",
+    "email": "j.wilson@hospital.org",
+    "phone": "+1 555-0105",
+    "associated_id": "STF001",
+    "is_active": true
+  },
+  {
+    "user_id": "USR006",
+    "username": "lab_tech",
+    "password_hash": "scrypt:32768:8:1$BBfwNowVN1VOrXA7$6c5ded1015869d999621f5a28179024d4248c144a6ed3bb0b94128e696b4bbb892ea45188f29cea590475e9d38fb2e089d233e9aaf889fdadd219fad3f1279a9",
+    "role": "Laboratory",
+    "name": "David Martinez, BMLS",
+    "email": "d.martinez@hospital.org",
+    "phone": "+1 555-0106",
+    "associated_id": "STF002",
+    "is_active": true
+  },
+  {
+    "user_id": "USR007",
+    "username": "pharma_john",
+    "password_hash": "scrypt:32768:8:1$D1zXhTMSRKa044Nh$be61cce2ceaffd7d7feda1f2d634779892f8da5e6241d9022f22fe3690a7e53b9d219d2b510553654c2a4c123657a3c7ac5a772bfc7573b7ffa2b6e4efb8be5f",
+    "role": "Pharmacy",
+    "name": "Johnathan Green, PharmD",
+    "email": "j.green@hospital.org",
+    "phone": "+1 555-0107",
+    "associated_id": "STF003",
+    "is_active": true
+  },
+  {
+    "user_id": "USR008",
+    "username": "patient_alice",
+    "password_hash": "scrypt:32768:8:1$tDm3Y7oy5lgE423T$5ab5bddabe88304a94d2ccc9a22366da8d0166fc0f5aee750863b43537e4681c490a620dc15decbd2e2b2bfa1330de737ec1e92bfbc768d590310b76ca2a9098",
+    "role": "Patient",
+    "name": "Alice Montgomery",
+    "email": "alice.m@gmail.com",
+    "phone": "+1 555-0201",
+    "associated_id": "PAT001",
+    "is_active": true
+  }
+]

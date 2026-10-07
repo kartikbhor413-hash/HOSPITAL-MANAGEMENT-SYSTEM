@@ -1,0 +1,95 @@
+[
+  {
+    "patient_id": "PAT001",
+    "name": "Alice Montgomery",
+    "age": 34,
+    "gender": "Female",
+    "blood_group": "A+",
+    "phone": "+1 555-0201",
+    "email": "alice.m@gmail.com",
+    "address": "452 Elm Street, Metropolis",
+    "emergency_contact": "Robert Montgomery (+1 555-0202)",
+    "registration_date": "2026-09-15",
+    "status": "Outpatient",
+    "allergies": [
+      "Penicillin",
+      "Sulfonamides"
+    ],
+    "chronic_conditions": [
+      "Mild Asthma"
+    ]
+  },
+  {
+    "patient_id": "PAT002",
+    "name": "Brian K. O'Connor",
+    "age": 48,
+    "gender": "Male",
+    "blood_group": "O+",
+    "phone": "+1 555-0203",
+    "email": "brian.oc@gmail.com",
+    "address": "782 Harbor Way, Metropolis",
+    "emergency_contact": "Mia Toretto (+1 555-0204)",
+    "registration_date": "2026-09-20",
+    "status": "Inpatient",
+    "bed_id": "BED002",
+    "admission_date": "2026-10-04",
+    "allergies": [],
+    "chronic_conditions": [
+      "Hypertension"
+    ]
+  },
+  {
+    "patient_id": "PAT003",
+    "name": "Elena Rostova",
+    "age": 62,
+    "gender": "Female",
+    "blood_group": "B+",
+    "phone": "+1 555-0205",
+    "email": "e.rostova@yahoo.com",
+    "address": "12 Pinecrest Blvd, Metropolis",
+    "emergency_contact": "Nikolai Rostov (+1 555-0206)",
+    "registration_date": "2026-09-28",
+    "status": "Inpatient",
+    "bed_id": "BED001",
+    "admission_date": "2026-10-06",
+    "allergies": [
+      "Aspirin"
+    ],
+    "chronic_conditions": [
+      "Type 2 Diabetes",
+      "Coronary Artery Disease"
+    ]
+  },
+  {
+    "patient_id": "PAT004",
+    "name": "Marcus Vance",
+    "age": 27,
+    "gender": "Male",
+    "blood_group": "AB-",
+    "phone": "+1 555-0207",
+    "email": "marcus.v@outlook.com",
+    "address": "90 Sunset Blvd, Metropolis",
+    "emergency_contact": "Claire Vance (+1 555-0208)",
+    "registration_date": "2026-10-01",
+    "status": "Discharged",
+    "allergies": [],
+    "chronic_conditions": []
+  },
+  {
+    "patient_id": "PAT005",
+    "name": "Sophia Martinez",
+    "age": 9,
+    "gender": "Female",
+    "blood_group": "O-",
+    "phone": "+1 555-0209",
+    "email": "c.martinez@gmail.com",
+    "address": "33 West Meadow Lane, Metropolis",
+    "emergency_contact": "Carlos Martinez (+1 555-0210)",
+    "registration_date": "2026-10-05",
+    "status": "Outpatient",
+    "allergies": [
+      "Peanuts"
+    ],
+    "chronic_conditions": []
+  }
+]

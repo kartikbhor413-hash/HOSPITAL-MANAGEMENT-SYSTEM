@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnostic Laboratory - SHMS</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="app-wrapper">
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="/static/images/hospital_icon.png" alt="Hospital Center Logo" style="height: 38px; width: 38px; object-fit: contain; background: white; padding: 4px; border-radius: var(--radius-sm);">
+      <div>
+        <div class="sidebar-title">HOSPITAL CENTER</div>
+        <div class="sidebar-subtitle">Pathology Lab</div>
+      </div>
+    </div>
+
+    <ul class="sidebar-menu">
+      <div class="menu-section-label">Diagnostic Bench</div>
+      <li class="menu-item active"><a href="/dashboard/laboratory"><span class="menu-icon">🔬</span> Test Orders Queue</a></li>
+      <li class="menu-item"><a href="#testCatalogSection"><span class="menu-icon">📑</span> Pathology Catalog</a></li>
+
+      <div class="menu-section-label">Other Portals</div>
+      <li class="menu-item"><a href="/dashboard/admin"><span class="menu-icon">👑</span> Admin Overview</a></li>
+      <li class="menu-item"><a href="/dashboard/doctor"><span class="menu-icon">🩺</span> Doctor Desk</a></li>
+      <li class="menu-item"><a href="/dashboard/pharmacy"><span class="menu-icon">💊</span> Pharmacy</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-mini-card">
+        <div class="user-avatar" style="background: linear-gradient(135deg, #d97706, #b45309);">LAB</div>
+        <div class="user-info">
+          <div class="user-name">{{ current_user.name if current_user else 'David Martinez' }}</div>
+          <span class="user-role-badge">Lab Technician</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT -->
+  <div class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title">Diagnostic Pathology &amp; Radiology Lab Station</h1>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-primary btn-sm" onclick="openModal('newLabOrderModal')">+ Order Diagnostic Test</button>
+        <button class="btn btn-secondary btn-sm" onclick="handleLogout()">Sign Out</button>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <!-- PENDING & COMPLETED LAB REQUESTS QUEUE -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🔬 Diagnostic Test Orders Queue</div>
+          <button class="btn btn-secondary btn-sm" onclick="loadLabOrders()">🔄 Refresh Orders</button>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Report ID</th>
+                <th>Patient Name</th>
+                <th>Diagnostic Test</th>
+                <th>Ordered Timestamp</th>
+                <th>Cost</th>
+                <th>Report Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="labOrdersTableBody">
+              <tr><td colspan="7" class="text-center text-muted">Loading lab orders...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DIAGNOSTIC TEST CATALOG -->
+      <div class="card" id="testCatalogSection">
+        <div class="card-header">
+          <div class="card-title">📑 Standard Pathology &amp; Imaging Catalog</div>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Test Code</th>
+                <th>Test Name</th>
+                <th>Department</th>
+                <th>Standard Fee</th>
+                <th>Specimen Type</th>
+                <th>Normal Reference Range</th>
+              </tr>
+            </thead>
+            <tbody id="labCatalogTableBody">
+              <tr><td colspan="6" class="text-center text-muted">Loading test catalog...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     MODAL: ENTER LAB RESULTS
+     ========================================================================= -->
+<div id="enterLabResultModal" class="modal-backdrop">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Enter Clinical Findings &amp; Sign Off</h3>
+      <button class="modal-close" onclick="closeModal('enterLabResultModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="lab_report_id">
+      <div style="background:#eff6ff; padding:12px; border-radius:var(--radius-sm); margin-bottom:16px;">
+        <strong id="lab_test_title">Test Report</strong>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Clinical Findings &amp; Numerical Values *</label>
+        <textarea id="lab_findings" class="form-control" rows="4" placeholder="e.g. Hemoglobin: 14.2 g/dL, WBC: 7,500 /uL, Platelets: 250,000 /uL. All parameters within normal adult reference limits."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Pathologist / Technician Remarks</label>
+        <input type="text" id="lab_notes" class="form-control" placeholder="Verified by Pathology Lab Staff">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" onclick="closeModal('enterLabResultModal')">Cancel</button>
+      <button type="button" class="btn btn-primary" onclick="submitLabResult()">✓ Finalize &amp; Sign Report</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     MODAL: NEW LAB ORDER REQUEST
+     ========================================================================= -->
+<div id="newLabOrderModal" class="modal-backdrop">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Order Diagnostic Procedure</h3>
+      <button class="modal-close" onclick="closeModal('newLabOrderModal')">&times;</button>
+    </div>
+    <form id="newLabOrderForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Patient ID *</label>
+          <input type="text" id="order_lab_patient_id" class="form-control" required placeholder="e.g. PAT001">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Select Diagnostic Test *</label>
+          <select id="order_lab_test_select" class="form-control" required>
+            <option value="">-- Choose Test --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Clinical Indication / Notes</label>
+          <input type="text" id="order_lab_notes" class="form-control" placeholder="e.g. Check for hyperlipidemia or acute infection">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('newLabOrderModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit Diagnostic Request</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/static/js/auth.js"></script>
+<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/medical.js"></script>
+
+<script>
+  async function loadLabCatalog() {
+    const tbody = document.getElementById("labCatalogTableBody");
+    const select = document.getElementById("order_lab_test_select");
+    if (!tbody) return;
+
+    try {
+      const res = await fetch("/api/laboratory/tests");
+      const json = await res.json();
+      if (!json.success || !json.data) return;
+
+      tbody.innerHTML = json.data.map(t => `
+        <tr>
+          <td><strong>${t.test_id}</strong></td>
+          <td><strong>${escapeHtml(t.test_name)}</strong></td>
+          <td><span class="badge" style="background:#e0f2fe; color:#0369a1;">${escapeHtml(t.department)}</span></td>
+          <td><strong>$${t.price.toFixed(2)}</strong></td>
+          <td>${escapeHtml(t.sample_type)}</td>
+          <td style="font-size:12px; color:var(--text-muted);">${escapeHtml(t.normal_range)}</td>
+        </tr>
+      `).join("");
+
+      if (select) {
+        select.innerHTML = `<option value="">-- Choose Test --</option>` +
+          json.data.map(t => `<option value="${t.test_id}">${escapeHtml(t.test_name)} ($${t.price})</option>`).join("");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  document.getElementById("newLabOrderForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const patientId = document.getElementById("order_lab_patient_id").value.trim();
+    const testId = document.getElementById("order_lab_test_select").value;
+    const notes = document.getElementById("order_lab_notes").value.trim();
+
+    try {
+      const res = await fetch("/api/laboratory/reports", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ patient_id: patientId, test_id: testId, notes: notes })
+      });
+      const json = await res.json();
+      if (json.success) {
+        alert("✓ Diagnostic test order registered.");
+        closeModal("newLabOrderModal");
+        e.target.reset();
+        loadLabOrders();
+      } else {
+        alert(`⚠️ ${json.message}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error submitting lab order.");
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadLabCatalog();
+    loadLabOrders();
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+[
+  {
+    "staff_id": "STF001",
+    "name": "Jane Wilson",
+    "role": "Receptionist",
+    "department": "Front Desk / OPD",
+    "phone": "+1 555-0105",
+    "shift": "General (08:00 - 17:00)"
+  },
+  {
+    "staff_id": "STF002",
+    "name": "David Martinez",
+    "role": "Laboratory Technician",
+    "department": "Diagnostic Pathology",
+    "phone": "+1 555-0106",
+    "shift": "Day (09:00 - 18:00)"
+  },
+  {
+    "staff_id": "STF003",
+    "name": "Johnathan Green",
+    "role": "Pharmacist",
+    "department": "Central Pharmacy",
+    "phone": "+1 555-0107",
+    "shift": "Day (08:30 - 17:30)"
+  }
+]

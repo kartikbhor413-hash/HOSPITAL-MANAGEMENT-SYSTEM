@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — Hospital Center Health</title>
+  <link rel="icon" type="image/png" href="/static/images/hospital_icon.png">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="login-page-body">
+
+  <!-- Ambient High-Tech Grid Effect -->
+  <div class="login-ambient-grid"></div>
+
+  <!-- Central Split-Screen Authentication Shell -->
+  <main class="login-shell">
+    
+    <!-- LEFT SIDE: HOSPITAL BRAND & CLINICAL CAPABILITIES SHOWCASE -->
+    <section class="login-brand-side">
+      <div>
+        <div class="brand-showcase-header">
+          <span class="brand-badge">
+            <span class="live-indicator-dot"></span>
+            Enterprise Clinical ERP
+          </span>
+        </div>
+
+        <h1 class="brand-hero-title">Hospital Center Health</h1>
+        <p class="brand-hero-text">
+          Next-generation clinical operations system unifying emergency triage, inpatient ward census, diagnostic pathology, and automated patient billing.
+        </p>
+
+        <div class="brand-features-list">
+          <!-- Feature 1 -->
+          <div class="brand-feature-item">
+            <div class="feature-item-icon">🚨</div>
+            <div class="feature-item-text">
+              <h4>Smart Emergency Priority Engine</h4>
+              <p>Dynamic vital-sign triage classifying cases (Critical to Low) with instant ICU bed shortage alerts.</p>
+            </div>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="brand-feature-item">
+            <div class="feature-item-icon">🛏️</div>
+            <div class="feature-item-text">
+              <h4>Real-Time Ward &amp; Bed Census</h4>
+              <p>Continuous occupancy monitoring across ICU, Emergency, and General Wards with rapid allocation.</p>
+            </div>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="brand-feature-item">
+            <div class="feature-item-icon">💊</div>
+            <div class="feature-item-text">
+              <h4>Closed-Loop Pharmacy &amp; Expiry Watcher</h4>
+              <p>Automated stock decrements on dispensing, reorder thresholds, and proactive 30-day expiry tracking.</p>
+            </div>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="brand-feature-item">
+            <div class="feature-item-icon">🧾</div>
+            <div class="feature-item-text">
+              <h4>Automated Multi-Factor Billing</h4>
+              <p>Consolidates consultations, bed stay, lab diagnostics, and medications into unified itemized invoices.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="brand-showcase-footer">
+        <div>
+          <span class="live-indicator-dot"></span>
+          <span>Gateway Online • Secure Node 01</span>
+        </div>
+        <div>
+          <span>🔒 256-Bit SSL • HIPAA Compliant</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT SIDE: AUTHENTICATION FORM CARD -->
+    <section class="login-card-side">
+      <!-- Hospital Logo Header -->
+      <div class="login-logo-lockup">
+        <a href="/" title="Return to Public Homepage">
+          <img src="/static/images/hospital_logo.png" alt="Hospital Center Health Logo" class="hospital-main-logo">
+        </a>
+        <h2 class="form-header-title">Welcome to Portal</h2>
+        <p class="form-header-subtitle">Sign in with your clinical credentials or patient ID</p>
+      </div>
+
+      <!-- Feedback / Error Notification Box -->
+      <div id="loginAlert" class="auth-alert-box"></div>
+
+      <!-- Login Form -->
+      <form id="loginForm" autocomplete="on">
+        <!-- Username Input -->
+        <div class="form-group">
+          <label class="form-label" for="username">Username / Staff ID / Patient ID</label>
+          <div class="input-with-icon-wrapper">
+            <span class="input-icon-adornment">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </span>
+            <input 
+              type="text" 
+              id="username" 
+              class="input-clean-modern" 
+              placeholder="e.g. admin, doctor_smith, patient_alice" 
+              required 
+              autocomplete="username"
+              autofocus
+            >
+          </div>
+        </div>
+
+        <!-- Password Input -->
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-with-icon-wrapper">
+            <span class="input-icon-adornment">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </span>
+            <input 
+              type="password" 
+              id="password" 
+              class="input-clean-modern" 
+              placeholder="Enter your secret password" 
+              required 
+              autocomplete="current-password"
+            >
+            <button type="button" id="togglePasswordBtn" class="password-toggle-btn" title="Toggle password visibility" tabindex="-1">
+              <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <!-- Caps Lock Warning -->
+          <div id="capsWarning" class="caps-warning-pill">
+            <span>⚠️ Caps Lock is active</span>
+          </div>
+        </div>
+
+        <!-- Utilities: Remember Me & Need Help Link -->
+        <div class="form-action-row">
+          <label class="custom-checkbox-label">
+            <input type="checkbox" id="rememberWorkstation">
+            <span>Remember workstation</span>
+          </label>
+          <a href="javascript:void(0)" class="link-subtle" onclick="openSupportModal()">Access Help?</a>
+        </div>
+
+        <!-- Primary Submit Button -->
+        <button type="submit" id="submitBtn" class="btn-submit-hero">
+          <span>Sign In to Portal</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </form>
+
+      <!-- Institutional Security Notice & Back to Public Site -->
+      <footer class="portal-security-notice">
+        <div>Authorized clinical staff and registered patients only.</div>
+        <div style="margin-top: 4px;">All system transactions are audited under medical confidentiality standards.</div>
+        <div style="margin-top: 12px;">
+          <a href="/" class="link-subtle" style="font-size: 12px; font-weight: 500;">&larr; Return to Hospital Public Website</a>
+        </div>
+      </footer>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       MODAL: INSTITUTIONAL ACCESS & IT HELPDESK ASSISTANCE
+       ========================================================================= -->
+  <div id="supportModal" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">🔐 Hospital Portal Access Assistance</h3>
+        <button class="modal-close" onclick="closeSupportModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="font-size: 13.5px; line-height: 1.6; color: var(--text-main);">
+        <p style="margin-bottom: 14px;">
+          To maintain strict compliance with health information privacy regulations, online automated password resets are disabled for clinical workstations.
+        </p>
+
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; margin-bottom: 16px;">
+          <h4 style="font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">👨‍⚕️ For Hospital Physicians, Nurses &amp; Staff:</h4>
+          <ul style="padding-left: 20px; margin: 0; color: var(--text-muted);">
+            <li>Contact Hospital Clinical IT Helpdesk: <strong>Extension 4040</strong></li>
+            <li>Visit IT Administration Office: <strong>Building B, Room 102</strong></li>
+            <li>Operating Hours: <strong>24/7 Rapid Clinical Support</strong></li>
+          </ul>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px;">
+          <h4 style="font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">👤 For Patients &amp; Outpatient Visitors:</h4>
+          <ul style="padding-left: 20px; margin: 0; color: var(--text-muted);">
+            <li>Contact Patient Admissions &amp; Records: <strong>+1 (555) 0100</strong></li>
+            <li>In-Person Inquiries: <strong>Central OPD Registration Counter (Ground Floor)</strong></li>
+            <li>Required Verification: <strong>Government-issued photo identification</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="closeSupportModal()">Understood</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/auth.js"></script>
+</body>
+</html>

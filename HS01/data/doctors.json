@@ -1,0 +1,108 @@
+[
+  {
+    "doctor_id": "DOC001",
+    "name": "Dr. Sarah Smith, MD",
+    "specialization": "Cardiology",
+    "department": "Cardiology",
+    "qualification": "MD (Harvard), FACC",
+    "experience_years": 14,
+    "phone": "+1 555-0102",
+    "email": "s.smith@hospital.org",
+    "opd_fee": 120.0,
+    "room_no": "OPD-102",
+    "working_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "available_slots": [
+      "09:00 AM",
+      "10:00 AM",
+      "11:30 AM",
+      "02:00 PM",
+      "03:30 PM"
+    ],
+    "is_available": true
+  },
+  {
+    "doctor_id": "DOC002",
+    "name": "Dr. Raymond Chen, MS",
+    "specialization": "Orthopedics & Trauma",
+    "department": "Orthopedics",
+    "qualification": "MS (Ortho), FACS",
+    "experience_years": 11,
+    "phone": "+1 555-0103",
+    "email": "r.chen@hospital.org",
+    "opd_fee": 110.0,
+    "room_no": "OPD-105",
+    "working_days": [
+      "Monday",
+      "Wednesday",
+      "Friday",
+      "Saturday"
+    ],
+    "available_slots": [
+      "09:30 AM",
+      "11:00 AM",
+      "01:30 PM",
+      "03:00 PM"
+    ],
+    "is_available": true
+  },
+  {
+    "doctor_id": "DOC003",
+    "name": "Dr. Amara Patel, MD",
+    "specialization": "Internal Medicine",
+    "department": "General Medicine",
+    "qualification": "MD (Internal Med), MRCP",
+    "experience_years": 9,
+    "phone": "+1 555-0112",
+    "email": "a.patel@hospital.org",
+    "opd_fee": 90.0,
+    "room_no": "OPD-101",
+    "working_days": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "available_slots": [
+      "08:30 AM",
+      "10:30 AM",
+      "12:00 PM",
+      "02:30 PM",
+      "04:00 PM"
+    ],
+    "is_available": true
+  },
+  {
+    "doctor_id": "DOC004",
+    "name": "Dr. Lucas Romero, MD",
+    "specialization": "Pediatrics",
+    "department": "Pediatrics",
+    "qualification": "MD (Pediatrics), FAAP",
+    "experience_years": 8,
+    "phone": "+1 555-0114",
+    "email": "l.romero@hospital.org",
+    "opd_fee": 95.0,
+    "room_no": "OPD-203",
+    "working_days": [
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
+    "available_slots": [
+      "09:00 AM",
+      "10:30 AM",
+      "01:00 PM",
+      "03:00 PM"
+    ],
+    "is_available": true
+  }
+]
